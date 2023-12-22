@@ -5,14 +5,11 @@ layout: home
 hero:
   name: "hooui"
   text: "这是一个常用的vue3组件库"
-  tagline: My great project tagline
+  tagline: 哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈
   actions:
     - theme: brand
-      text: Markdown Examples
-      link: /markdown-examples
-    - theme: alt
-      text: API Examples
-      link: /api-examples
+      text: 开始
+      link: /directive/loading
 
 features:
   - title: Feature A

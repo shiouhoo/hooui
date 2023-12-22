@@ -7,22 +7,28 @@ export default defineConfig({
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
-      { text: 'Home', link: '/' },
-      { text: 'Examples', link: '/markdown-examples' }
+      { text: 'directive', link: '/directive/loading' }
     ],
 
     sidebar: [
       {
-        text: 'Examples',
+        text: '自定义指令',
         items: [
-          { text: 'Markdown Examples', link: '/markdown-examples' },
-          { text: 'Runtime API Examples', link: '/api-examples' }
+          { text: 'loading', link: '/directive/loading' },
         ]
       }
     ],
 
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/vuejs/vitepress' }
-    ]
+      { icon: 'github', link: 'https://github.com/shiouhoo/hooui' }
+    ],
+    docFooter: {
+      prev: "上一页",
+      next: "下一页",
+    },
+    footer: {
+      message: 'Released under the MIT License.',
+      copyright: 'Copyright © 2023-present shiouhoo'
+    }
   }
 })

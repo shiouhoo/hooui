@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { loadingDirective } from './directive/loading';
+import { ref } from 'vue';
+import { loadingDirective } from '../directive/loading';
 
 const vHLoading = loadingDirective.directive;
 
@@ -10,7 +11,7 @@ const loading = ref(true);
 <template>
   <header>
     <div class="wrapper" v-h-loading="loading">
-      fdsa
+      这里测试一下加载
     </div>
   </header>
 </template>
@@ -18,7 +19,8 @@ const loading = ref(true);
 <style scoped lang="less">
 .wrapper{
   width: 500px;
-  height: 500px;
-  background: red;
+  height: 100px;
+  color: black;
+  border: 1px solid #f1dfdf;
 }
 </style>

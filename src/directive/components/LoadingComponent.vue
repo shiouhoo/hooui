@@ -13,14 +13,12 @@ defineExpose({
 </script>
 
 <template>
-    <div class="mask">
-        <div class="loader">
-            <div>
-                <div class="dot"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
+    <div class="h-mask">
+        <div class="h-loader">
+            <div class="h-icon">
+                <svg class="circular" viewBox="0 0 50 50">
+                    <circle class="path" cx="25" cy="25" r="20" fill="none"></circle>
+                </svg>
             </div>
             <div class="h-tip-text">{{ text }}</div>
         </div>
@@ -28,7 +26,29 @@ defineExpose({
 </template>
 
 <style lang="scss" scoped>
-.mask {
+@keyframes loading-rotate {
+    to {
+        transform: rotate(360deg)
+    }
+}
+@keyframes loading-icon {
+    0% {
+        stroke-dasharray: 1,200;
+        stroke-dashoffset: 0
+    }
+
+    50% {
+        stroke-dasharray: 90,150;
+        stroke-dashoffset: -40px
+    }
+
+    to {
+        stroke-dasharray: 90,150;
+        stroke-dashoffset: -120px
+    }
+}
+
+.h-mask {
     width: 100%;
     height: 100%;
     position: absolute;
@@ -37,18 +57,32 @@ defineExpose({
     right: 0;
     bottom: 0;
     margin: auto;
-    background-color: rgba(122, 122, 122, 0.8);
-    z-index: 99;
+    background-color: rgba(255, 255, 255, 0.9);
+    z-index: 9;
+    transition: opacity 0.3s;
 
-    .loader {
+    .h-loader {
         position: absolute;
         top: 50%;
-        left: 40%;
-        margin-left: 10%;
+        left: 50%;
         transform: translate3d(-50%, -50%, 0);
         display: flex;
         flex-direction: column;
         align-items: center;
+        .circular {
+            display: inline;
+            height: 42px;
+            width: 42px;
+            animation: loading-rotate 2s linear infinite;
+            .path{
+                animation: loading-icon 1.5s ease-in-out infinite;
+                stroke-dasharray: 90,150;
+                stroke-dashoffset: 0;
+                stroke-width: 2;
+                stroke: #409eff;
+                stroke-linecap: round;
+            }
+        }
     }
 
     .h-tip-text {
@@ -56,96 +90,6 @@ defineExpose({
         padding-top: 10px;
     }
 
-    .dot {
-        width: 18px;
-        height: 18px;
-        border-radius: 100%;
-        display: inline-block;
-        animation: slide 1s infinite;
-    }
-
-    .dot:nth-child(1) {
-        animation-delay: 0.1s;
-        background: #1fbfff;
-    }
-
-    .dot:nth-child(2) {
-        animation-delay: 0.2s;
-        background: #2ea4ff;
-    }
-
-    .dot:nth-child(3) {
-        animation-delay: 0.3s;
-        background: #3793ff;
-    }
-
-    .dot:nth-child(4) {
-        animation-delay: 0.4s;
-        background: #3b89ff;
-    }
-
-    .dot:nth-child(5) {
-        animation-delay: 0.5s;
-        background: #4577ff;
-    }
 }
 
-@-moz-keyframes slide {
-    0% {
-        transform: scale(1);
-    }
-
-    50% {
-        opacity: 0.3;
-        transform: scale(2);
-    }
-
-    100% {
-        transform: scale(1);
-    }
-}
-
-@-webkit-keyframes slide {
-    0% {
-        transform: scale(1);
-    }
-
-    50% {
-        opacity: 0.3;
-        transform: scale(2);
-    }
-
-    100% {
-        transform: scale(1);
-    }
-}
-
-@-o-keyframes slide {
-    0% {
-        transform: scale(1);
-    }
-
-    50% {
-        opacity: 0.3;
-        transform: scale(2);
-    }
-
-    100% {
-        transform: scale(1);
-    }
-}
-
-@keyframes slide {
-    0% {
-        transform: scale(1);
-    }
-
-    50% {
-        opacity: 0.3;
-        transform: scale(2);
-    }
-
-    100% {
-        transform: scale(1);
-    }
-}</style>
+</style>
