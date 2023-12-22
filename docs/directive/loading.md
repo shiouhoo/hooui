@@ -2,7 +2,7 @@
 outline: [1,2, 3]
 ---
 <script setup>
-import TestLoading from '../../src/test/TestLoading.vue';
+import DemoLoading from '../../src/demo/DemoLoading.vue';
 </script>
 # v-h-loading
 这是一个作用于`pc`上，用于在元素上添加一个loading效果，弥补了antdv没有loading指令的缺陷。
@@ -10,7 +10,7 @@ import TestLoading from '../../src/test/TestLoading.vue';
 ## 源文件
 
 [loading.ts](https://github.com/shiouhoo/hooui/blob/main/src/directive/loading.ts)，以及同级目录下的components文件夹下的LoadingComponent组件(在组件中可以改变loading的样式)。
-<TestLoading></TestLoading>
+<DemoLoading></DemoLoading>
 ## 组件内部使用
 ::: details 显示代码
 

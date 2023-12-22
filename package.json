@@ -38,7 +38,7 @@
     "lint-staged": "^13.2.3",
     "sass": "^1.64.0",
     "typescript": "~5.0.4",
-    "unplugin-auto-import": "^0.16.6",
+    "unplugin-auto-import": "^0.16.7",
     "unplugin-vue-components": "^0.25.2",
     "vite": "^4.3.9",
     "vitepress": "1.0.0-rc.32",

@@ -10,7 +10,6 @@ const loading = ref(true);
 <template>
   <header>
     <div class="wrapper" v-h-loading="loading">
-      fdsa
     </div>
   </header>
 </template>
