@@ -40,4 +40,4 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@4.1.5
         with:
           branch: main
-          publish_dir: docs/.vitepress/dist
+          folder: docs/.vitepress/dist
