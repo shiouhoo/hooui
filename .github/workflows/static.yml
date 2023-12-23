@@ -35,7 +35,7 @@ jobs:
         with:
           node-version: 16
       - name: Deploy to GitHub Pages
-        run: npm i pnpm -g && pnpm i && pnpm docs:build
+        run: npm i pnpm -g && pnpm install --no-frozen-lockfile && pnpm docs:build
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@4.1.5
         with:
