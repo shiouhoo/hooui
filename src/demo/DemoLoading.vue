@@ -1,4 +1,12 @@
 <script setup lang="ts">
+
+withDefaults(defineProps<{
+  text?: string;
+}>(), {
+    text: '加载中...'
+}
+);
+
 import { ref } from 'vue';
 import { loadingDirective } from '../directive/loading';
 
@@ -10,7 +18,7 @@ const loading = ref(true);
 
 <template>
   <header>
-    <div class="wrapper" v-h-loading="loading">
+    <div class="wrapper" v-h-loading="loading" :h-loading-text="text">
       这里测试一下加载
     </div>
   </header>
