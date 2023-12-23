@@ -17,11 +17,11 @@ const loading = ref(true);
 </script>
 
 <template>
-  <header>
-    <div class="wrapper" v-h-loading="loading" :h-loading-text="text">
-      这里测试一下加载
-    </div>
-  </header>
+    <header>
+        <div class="wrapper" v-h-loading="loading" :h-loading-text="text">
+            这里测试一下加载
+        </div>
+    </header>
 </template>
 
 <style scoped lang="less">
