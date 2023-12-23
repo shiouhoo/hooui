@@ -8,17 +8,28 @@ export default defineConfig({
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
-      { text: 'directive', link: '/directive/loading' }
+      { text: 'directive', link: '/directive/loading' },
+      { text: 'components', link: '/package/searchscopeinput' }
     ],
 
-    sidebar: [
-      {
-        text: '自定义指令',
-        items: [
-          { text: 'loading', link: '/directive/loading' },
-        ]
-      }
-    ],
+    sidebar: {
+      'directive': [
+        {
+          text: '自定义指令',
+          items: [
+            { text: 'loading', link: '/directive/loading' },
+          ]
+        }
+      ],
+      'package': [
+        {
+          text: '输入组件',
+          items: [
+            { text: 'searchscopeinput', link: '/package/searchscopeinput' },
+          ]
+        }
+      ]
+    },
 
     socialLinks: [
       { icon: 'github', link: 'https://github.com/shiouhoo/hooui' }
