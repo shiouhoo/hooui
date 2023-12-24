@@ -3,13 +3,13 @@ import { defineConfig } from 'vitepress'
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   title: "hooui",
-  base: "/hooui/",
+  // base: "/hooui",
   description: "这是一个常用的vue3组件库",
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
       { text: 'directive', link: '/directive/loading' },
-      { text: 'components', link: '/package/searchscopeinput' }
+      { text: 'components', link: '/package/expandcontainer' }
     ],
 
     sidebar: {
@@ -25,6 +25,7 @@ export default defineConfig({
         {
           text: '输入组件',
           items: [
+            { text: 'expandcontainer', link: '/package/expandcontainer' },
             { text: 'searchscopeinput', link: '/package/searchscopeinput' },
           ]
         }
