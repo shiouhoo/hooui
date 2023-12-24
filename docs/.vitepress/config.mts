@@ -3,7 +3,7 @@ import { defineConfig } from 'vitepress'
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   title: "hooui",
-  // base: "/hooui",
+  base: "/hooui",
   description: "这是一个常用的vue3组件库",
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
