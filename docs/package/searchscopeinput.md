@@ -1,15 +1,13 @@
 ---
 outline: [2,3]
 ---
-<script setup>
-import DemoSearchScopeInput from '../../src/demo/DemoSearchScopeInput.vue';
-</script>
+
 # SearchScopeInput
 这是一个带有下拉框的搜索框。
 ## 使用
 ### 源文件
 
-[SearchScopeInput.ts](https://github.com/shiouhoo/hooui/blob/main/src/package/searchscopeinput/Index.ts)
+[SearchScopeInput.vue](https://github.com/shiouhoo/hooui/blob/main/src/package/searchscopeinput/Index.vue)
 
 <DemoSearchScopeInput></DemoSearchScopeInput>
 
@@ -18,7 +16,6 @@ import DemoSearchScopeInput from '../../src/demo/DemoSearchScopeInput.vue';
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue';
-import SearchScopeInput from '../package/searchscopeinput/Index.vue';
 
 const options = [{
     label: 'label1',
@@ -86,3 +83,9 @@ const input = ref('');
 ### input-enter
 
 输入框按下回车时触发，参数为输入框的值
+
+## 插槽
+
+### suffix
+
+输入框右侧图标
