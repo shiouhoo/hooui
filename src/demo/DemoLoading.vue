@@ -15,7 +15,6 @@ const vHLoading = loadingDirective.directive;
 const loading = ref(true);
 
 </script>
-
 <template>
     <header>
         <div class="wrapper" v-h-loading="loading" :h-loading-text="text">

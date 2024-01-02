@@ -9,7 +9,7 @@ outline: [2,3]
 ## 使用
 ### 源文件
 
-[ExpandContainer.vue](https://github.com/shiouhoo/hooui/blob/main/src/package/ExpandContainer/Index.vue)
+[ExpandContainer.vue](https://github.com/shiouhoo/hooui/blob/main/src/package/expandcontainer/Index.vue)
 
 ### 向下展开
 <br/>
