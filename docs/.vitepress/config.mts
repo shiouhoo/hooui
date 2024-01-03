@@ -8,7 +8,7 @@ export default defineConfig({
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
-      { text: 'directive', link: '/directive/loading' },
+      { text: 'directive', link: '/directive/' },
       { text: 'components', link: '/package/expandcontainer' }
     ],
 
@@ -17,7 +17,9 @@ export default defineConfig({
         {
           text: '自定义指令',
           items: [
+            { text: 'index', link: '/directive/' },
             { text: 'loading', link: '/directive/loading' },
+            { text: 'copy', link: '/directive/copy' },
           ]
         }
       ],

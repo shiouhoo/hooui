@@ -1,9 +1,7 @@
 ---
 outline: [2,3]
 ---
-<script setup>
-import DemoLoading from '../../src/demo/DemoLoading.vue';
-</script>
+
 # v-h-loading
 这是一个作用于`pc`上，用于在元素上添加一个loading效果，弥补了antdv没有loading指令的缺陷。
 ## 使用
@@ -33,13 +31,11 @@ const loading = ref(true);
 </template>
 ```
 :::
-### 全局使用
-在main.ts中引入
-```ts
-import { loadingDirective } from './directive/loading';
-const app = createApp(App);
-app.directive(loadingDirective.name, loadingDirective.directive);
-```
+
+## 参数值
+
+boolean值，用于控制loading的显示和隐藏。
+
 ## 参数
 
 ### h-loading-text
@@ -55,11 +51,9 @@ const loading = ref(true);
 
 </script>
 <template>
-  <header>
     <div class="wrapper" v-h-loading="loading" h-loading-text="这是自定义文字。。。">
-      这里会加载
+        这里会加载
     </div>
-  </header>
 </template>
 ```
 :::

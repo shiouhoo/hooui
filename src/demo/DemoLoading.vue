@@ -16,17 +16,16 @@ const loading = ref(true);
 
 </script>
 <template>
-    <header>
-        <div class="wrapper" v-h-loading="loading" :h-loading-text="text">
-            这里测试一下加载
-        </div>
-    </header>
+    <div class="wrapper" v-h-loading="loading" :h-loading-text="text">
+        这里测试一下复制
+    </div>
 </template>
 
 <style scoped lang="less">
 .wrapper{
   width: 500px;
   height: 100px;
+  padding: 20px;
   color: black;
   border: 1px solid #f1dfdf;
 }
