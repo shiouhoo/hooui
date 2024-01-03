@@ -8,7 +8,7 @@ withDefaults(defineProps<{
 );
 
 import { ref } from 'vue';
-import { loadingDirective } from '../directive/loading';
+import loadingDirective from '../directive/loading';
 
 const vHLoading = loadingDirective.directive;
 

@@ -1,10 +1,7 @@
 <script setup lang="ts">
-import { loadingDirective } from './directive/loading';
 import SearchScopeInput from './package/searchscopeinput/Index.vue';
 
-const vHLoading = loadingDirective.directive;
-
-const loading = ref(false);
+const loading = ref(0);
 
 const options = [{
     label: 'label1',
@@ -22,9 +19,10 @@ const input = ref('value1');
 
 <template>
     <header>
-        <div class="wrapper" v-h-loading="loading">
+        <div class="wrapper" v-h-loading="loading" h-loading-text="sdf">
             <SearchScopeInput :options="options" v-model:select="select" v-model:input="input"></SearchScopeInput>
         </div>
+        <div v-h-copy="true" class="flex items-center" @click="loading++">测试复制</div>
     </header>
 </template>
 
@@ -32,6 +30,6 @@ const input = ref('value1');
 .wrapper{
   width: 500px;
   height: 500px;
-  background: red;
+  background: rgb(181, 206, 135);
 }
 </style>
