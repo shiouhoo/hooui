@@ -1,0 +1,19 @@
+.vp-doc table{
+    display: table;
+}
+
+.vp-doc th, .vp-doc td {
+    border: 0;
+    padding: 16px;
+    font-size: 16px;
+}
+.vp-doc tr:nth-child(2n) {
+    background-color: #fff;
+}
+.vp-doc th{
+    color: #000;
+    font-size: 16px;
+}
+.ant-table-cell:first-child{
+    white-space: nowrap;
+}
