@@ -12,6 +12,7 @@ outline: [2,3]
 ## 示例
 
 ### 基本使用
+<div v-if="!preferUnocss" class="unprefer-unocss"></div>
 
 :::demo
  
@@ -67,6 +68,9 @@ function copy(secuss: boolean) {
 
 
 <script setup lang="ts">
+import { inject } from 'vue';
+
+const preferUnocss = inject('prefer-unocss');
 
 const data = [
     {
