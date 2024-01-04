@@ -36,6 +36,33 @@ function copy(secuss: boolean) {
 ```
 :::
 
+### 文本过长
+
+有的时候文字超出了盒子所设定的宽度，需要用额外的样式来处理
+
+:::demo
+ 
+```vue
+<template>
+    <span class="wrapper" v-h-copy style="display: flex; align-items: center;">
+        <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+            这是一段过长的文本，父盒子有溢出隐藏，测试一下复制
+        </span>
+    </span>
+</template>
+<style scoped lang="less">
+
+.wrapper {
+    display: inline-block;
+    width: 300px;
+    padding: 0 5px;
+    border: 1px solid #ccc;
+}
+
+</style>
+```
+:::
+
 ## 参数值
 <script setup lang="ts">
 
