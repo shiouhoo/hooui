@@ -2,6 +2,7 @@
   "name": "hooui",
   "version": "0.0.1",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "npm run type-check && npm run build-only",

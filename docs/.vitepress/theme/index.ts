@@ -9,7 +9,7 @@ import './index.less';
 // 防止覆盖组件样式
 import { installComponents } from '../../../src/package';
 import AsideTop from '../layout/AsideTop.vue';
-// import coms from '../../../src/demo';
+import { preferUnocss } from '../preferences';
 
 /** @type {import('vitepress').Theme} */
 export default {
@@ -20,17 +20,14 @@ export default {
         ctx.app.use(Antd);
 
         useComponents(ctx.app);
-        if (!import.meta.env.SSR) {
+        ctx.app.provide('prefer-unocss', preferUnocss);
+        if (!(import.meta as any).env.SSR) {
 
             for (const directiveKey in directives) {
                 const name = directives[directiveKey].default.name;
                 const directive = directives[directiveKey].default.directive;
                 ctx.app.directive(name, directive);
             }
-            // Object.keys(coms).forEach((c) => {
-            //     const component = coms[c].default;
-            //     ctx.app.component(component.__name, component);
-            // });
         }
     }
 };

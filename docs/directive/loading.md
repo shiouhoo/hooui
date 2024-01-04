@@ -62,8 +62,6 @@ const loading = ref(true);
 ```
 :::
 
-## 参数
-
 <script setup lang="ts">
 
 const data = [
@@ -81,4 +79,6 @@ const data = [
     }
 ];
 </script>
+
+## 参数
 <ParamsTable :data="data"></ParamsTable>
