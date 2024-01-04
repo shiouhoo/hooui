@@ -5,7 +5,7 @@ import AutoImport from 'unplugin-auto-import/vite';
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
     title: 'hooui',
-    //   base: "/hooui",
+    base: '/hooui',
     description: '这是一个常用的vue3组件库',
     markdown: {
         config: (md) => {
