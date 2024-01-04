@@ -8,11 +8,13 @@ import 'vitepress-theme-demoblock/dist/theme/styles/index.css';
 import './index.less';
 // 防止覆盖组件样式
 import { installComponents } from '../../../src/package';
-
+import AsideTop from '../layout/AsideTop.vue';
 // import coms from '../../../src/demo';
 
+/** @type {import('vitepress').Theme} */
 export default {
     extends: DefaultTheme,
+    Layout: AsideTop,
     enhanceApp(ctx) {
         installComponents(ctx.app);
         ctx.app.use(Antd);
