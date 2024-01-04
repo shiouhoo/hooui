@@ -11,7 +11,7 @@ withDefaults(defineProps<{
         type: string;
         defaultValue: string;
     }[];
-}>(),{
+}>(), {
     data: () => [],
 });
 

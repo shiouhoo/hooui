@@ -10,7 +10,7 @@ withDefaults(defineProps<{
         desc: string;
         params: string;
     }[];
-}>(),{
+}>(), {
     data: () => [],
 });
 

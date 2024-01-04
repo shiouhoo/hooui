@@ -7,7 +7,7 @@ module.exports = {
         es2021: true,
         node: true,
     },
-    root: true,
+    ignorePatterns: ['!.vitepress', 'cache'],
     extends: [
         'plugin:vue/vue3-essential',
         'eslint:recommended',
@@ -17,6 +17,14 @@ module.exports = {
     parserOptions: {
         ecmaVersion: 'latest'
     },
+    overrides: [
+        {
+            files: ['Index.vue', 'index.vue', 'Demo.vue', 'useComponents.js'],
+            rules: {
+                'vue/multi-word-component-names': 'off',
+            }
+        }
+    ],
     rules: {
     }
 };

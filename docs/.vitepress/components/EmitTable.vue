@@ -10,23 +10,23 @@ withDefaults(defineProps<{
     desc: string;
     params: string;
   }[];
-}>(),{
-  data: () => [],
+}>(), {
+    data: () => [],
 });
 
 const columns = [
-  {
-    title: '事件名',
-    dataIndex: 'name',
-  },
-  {
-    title: '说明',
-    dataIndex: 'desc',
-  },
-  {
-    title: '参数',
-    dataIndex: 'params',
-  },
+    {
+        title: '事件名',
+        dataIndex: 'name',
+    },
+    {
+        title: '说明',
+        dataIndex: 'desc',
+    },
+    {
+        title: '参数',
+        dataIndex: 'params',
+    },
 ];
 
 </script>

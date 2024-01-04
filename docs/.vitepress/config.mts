@@ -1,15 +1,15 @@
-import { defineConfig } from 'vitepress'
-import { demoblockPlugin, demoblockVitePlugin } from 'vitepress-theme-demoblock'
+import { defineConfig } from 'vitepress';
+import { demoblockPlugin, demoblockVitePlugin } from 'vitepress-theme-demoblock';
 import AutoImport from 'unplugin-auto-import/vite';
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-    title: "hooui",
+    title: 'hooui',
     //   base: "/hooui",
-    description: "这是一个常用的vue3组件库",
+    description: '这是一个常用的vue3组件库',
     markdown: {
         config: (md) => {
-            md.use(demoblockPlugin)
+            md.use(demoblockPlugin);
         }
     },
     vite: {
@@ -28,7 +28,7 @@ export default defineConfig({
         ],
 
         sidebar: {
-            'directive': [
+            directive: [
                 {
                     text: '自定义指令',
                     items: [
@@ -38,7 +38,7 @@ export default defineConfig({
                     ]
                 }
             ],
-            'package': [
+            package: [
                 {
                     text: '输入组件',
                     items: [
@@ -53,12 +53,12 @@ export default defineConfig({
             { icon: 'github', link: 'https://github.com/shiouhoo/hooui' }
         ],
         docFooter: {
-            prev: "上一页",
-            next: "下一页",
+            prev: '上一页',
+            next: '下一页',
         },
         footer: {
             message: 'Released under the MIT License.',
             copyright: 'Copyright © 2023-present shiouhoo'
         }
     }
-})
+});
