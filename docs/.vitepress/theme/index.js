@@ -18,18 +18,18 @@ export default {
         installComponents(ctx.app);
         ctx.app.use(Antd);
 
-        for (const directiveKey in directives) {
-            const name = directives[directiveKey].default.name;
-            const directive = directives[directiveKey].default.directive;
-            ctx.app.directive(name, directive);
-        }
-
         useComponents(ctx.app);
-        // if (!import.meta.env.SSR) {
-        //     Object.keys(coms).forEach((c) => {
-        //         const component = coms[c].default;
-        //         ctx.app.component(component.__name, component);
-        //     });
-        // }
+        if (!import.meta.env.SSR) {
+
+            for (const directiveKey in directives) {
+                const name = directives[directiveKey].default.name;
+                const directive = directives[directiveKey].default.directive;
+                ctx.app.directive(name, directive);
+            }
+            // Object.keys(coms).forEach((c) => {
+            //     const component = coms[c].default;
+            //     ctx.app.component(component.__name, component);
+            // });
+        }
     }
 };
