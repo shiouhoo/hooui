@@ -102,24 +102,6 @@ const expand = ref(false);
 ## props 参数
 
 <script setup lang="ts">
-const columns = [
-    {
-        title: '参数名',
-        dataIndex: 'name',
-    },
-    {
-        title: '说明',
-        dataIndex: 'desc',
-    },
-    {
-        title: '类型',
-        dataIndex: 'type',
-    },
-    {
-        title: '默认值',
-        dataIndex: 'defaultValue',
-    },
-];
 
 const data = [
     {
@@ -154,41 +136,11 @@ const data = [
     },
 ];
 
-const columns2 = [
-  {
-    title: '事件名',
-    dataIndex: 'name',
-  },
-  {
-    title: '说明',
-    dataIndex: 'desc',
-  },
-  {
-    title: '参数',
-    dataIndex: 'params',
-  },
-];
-
 const data2 = [
     {
         name: 'expand-change',
         desc: '展开状态改变时触发',
         params: '展开状态',
-    },
-];
-
-const columns3 = [
-    {
-        title: '插槽名',
-        dataIndex: 'name',
-    },
-    {
-        title: '说明',
-        dataIndex: 'desc',
-    },
-    {
-        title: '参数',
-        dataIndex: 'params',
     },
 ];
 
@@ -210,15 +162,15 @@ const data3 = [
     },
 ];
 </script>
-<a-table :columns="columns" :pagination="false" :data-source="data" bordered></a-table>
+<ParamsTable :data="data"></ParamsTable>
 
 ## 事件
 
-<a-table :columns="columns2" :pagination="false" :data-source="data2" bordered></a-table>
+<EmitTable :data="data2"></EmitTable>
 
 ## 插槽
 
-<a-table :columns="columns3" :pagination="false" :data-source="data3" bordered></a-table>
+<SlotTable :data="data3"></SlotTable>
 
 ## 样式
 

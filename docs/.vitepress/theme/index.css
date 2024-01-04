@@ -14,6 +14,13 @@
     color: #000;
     font-size: 16px;
 }
+
+/* antdv */
 .ant-table-cell:first-child{
     white-space: nowrap;
+}
+
+
+.demoblock-tooltip .demoblock-tooltip-content{
+    z-index: 99;
 }

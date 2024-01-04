@@ -1,13 +1,16 @@
-// .vitepress/theme/index.js
-import 'ant-design-vue/dist/antd.css';
 import Antd from 'ant-design-vue';
-import DefaultTheme from 'vitepress/theme';
-import coms from '../../../src/demo';
-import 'vitepress-theme-demoblock/dist/theme/styles/index.css'
 import { useComponents } from './useComponents'
 import directives from '../../../src/directive';
+
+/** 样式写在后面，防止异常现象 */
+import 'ant-design-vue/dist/antd.css';
+import DefaultTheme from 'vitepress/theme';
+import 'vitepress-theme-demoblock/dist/theme/styles/index.css'
+import './index.css';
+// 防止覆盖组件样式
 import { installComponents } from '../../../src/package';
-import './index.css'
+
+// import coms from '../../../src/demo';
 
 export default {
     extends: DefaultTheme,
@@ -22,12 +25,11 @@ export default {
         }
 
         useComponents(ctx.app);
-        if (!import.meta.env.SSR) {
-            Object.keys(coms).forEach((c) => {
-                const component = coms[c].default;
-                // 挂载全局控件
-                ctx.app.component(component.__name, component);
-            });
-        }
+        // if (!import.meta.env.SSR) {
+        //     Object.keys(coms).forEach((c) => {
+        //         const component = coms[c].default;
+        //         ctx.app.component(component.__name, component);
+        //     });
+        // }
     }
 }

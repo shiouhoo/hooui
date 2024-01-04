@@ -65,24 +65,6 @@ const loading = ref(true);
 ## 参数
 
 <script setup lang="ts">
-const columns = [
-    {
-        title: '参数名',
-        dataIndex: 'name',
-    },
-    {
-        title: '说明',
-        dataIndex: 'desc',
-    },
-    {
-        title: '类型',
-        dataIndex: 'type',
-    },
-    {
-        title: '默认值',
-        dataIndex: 'defaultValue',
-    },
-];
 
 const data = [
     {
@@ -99,4 +81,4 @@ const data = [
     }
 ];
 </script>
-<a-table :columns="columns" :pagination="false" :data-source="data" bordered></a-table>
+<ParamsTable :data="data"></ParamsTable>
