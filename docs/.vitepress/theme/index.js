@@ -1,19 +1,35 @@
-// .vitepress/theme/index.js
-import './antdv.css'
 import Antd from 'ant-design-vue';
+import { useComponents } from './useComponents';
+import directives from '../../../src/directive';
+
+/** 样式写在后面，防止异常现象 */
+import 'ant-design-vue/dist/antd.css';
 import DefaultTheme from 'vitepress/theme';
-import coms from '../../../src/demo';
+import 'vitepress-theme-demoblock/dist/theme/styles/index.css';
+import './index.css';
+// 防止覆盖组件样式
+import { installComponents } from '../../../src/package';
+
+// import coms from '../../../src/demo';
 
 export default {
-  extends: DefaultTheme,
-  enhanceApp(ctx) {
-    ctx.app.use(Antd);
-    if (!import.meta.env.SSR) {
-      Object.keys(coms).forEach((c) => {
-        const component = coms[c].default;
-        // 挂载全局控件
-          ctx.app.component(component.__name, component);
-      });
+    extends: DefaultTheme,
+    enhanceApp(ctx) {
+        installComponents(ctx.app);
+        ctx.app.use(Antd);
+
+        for (const directiveKey in directives) {
+            const name = directives[directiveKey].default.name;
+            const directive = directives[directiveKey].default.directive;
+            ctx.app.directive(name, directive);
+        }
+
+        useComponents(ctx.app);
+        // if (!import.meta.env.SSR) {
+        //     Object.keys(coms).forEach((c) => {
+        //         const component = coms[c].default;
+        //         ctx.app.component(component.__name, component);
+        //     });
+        // }
     }
-  }
-}
+};

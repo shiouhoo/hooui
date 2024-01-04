@@ -9,14 +9,14 @@ hero:
   actions:
     - theme: brand
       text: 开始
-      link: /directive/loading
+      link: /directive/
 
 features:
-  - title: Feature A
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature B
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature C
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
+  - title: 什么都有
+    details: 记录了一些工作中常用的指令，组件，hooks等,部分组件过度封装，如果不是契合度很高，建议修改后使用，或者不要使用
+  - title: 目的
+    details: 一切为了，不加班！不加班！不加班！不加班！不加班！不加班！不加班！不加班！不加班！
+  - title: 未完待续
+    details: 桃李待日开，荣华照当年(￣︶￣)↗
 ---
 

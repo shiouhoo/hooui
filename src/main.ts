@@ -6,11 +6,15 @@ import Vant from 'vant';
 import 'vant/lib/index.css';
 import 'virtual:uno.css';
 
-import { loadingDirective } from './directive/loading';
+import directives from './directive';
 
 const app = createApp(App);
 
-app.directive(loadingDirective.name, loadingDirective.directive);
+for(const directiveKey in directives) {
+    const name = directives[directiveKey].default.name;
+    const directive = directives[directiveKey].default.directive;
+    app.directive(name, directive);
+}
 
 app.use(Vant);
 

@@ -38,7 +38,7 @@ const loading: Directive = {
     },
 };
 
-export const loadingDirective = {
+export default {
     name: 'h-loading',
     directive: loading
 };
