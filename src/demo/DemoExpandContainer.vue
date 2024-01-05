@@ -1,32 +1,54 @@
 <script setup lang="ts">
 import ExpandContainer from '../package/expandcontainer/Index.vue';
-import { ref } from 'vue';
-
-withDefaults(defineProps<{
-    height: string;
-    position?: 'bottom' | 'top';
-    iconSize?: number;
-}>(), {
-    position: 'bottom',
-    iconSize: 20
-});
+import ExpandContainerUnocss from '../package/expandcontainer/Unocss.vue';
+import BaseTab from './BaseTab.vue';
 
 const expand = ref(false);
+
+const height = ref('50px');
+
+const position = ref<'bottom' | 'top'>('bottom');
+
+const changePostion = () => {
+    position.value = position.value === 'bottom' ? 'top' : 'bottom';
+};
+
+const iconSize = ref(20);
 
 </script>
 
 <template>
+    <a-button type="primary" @click="changePostion">切换position</a-button>
     <div class="wrapper">
-        <ExpandContainer
-            v-model:expand="expand"
-            :height="height"
-            :position="position"
-            :iconSize="iconSize"
-        >
-            <div class="list">
-                <div class="item" v-for="(item,index) in '123456789123456789'" :key="index">item{{ item }}</div>
-            </div>
-        </ExpandContainer>
+        <BaseTab>
+            <template #common>
+                <ExpandContainer
+                    v-model:expand="expand"
+                    :height="height"
+                    :style="`height: ${position === 'top' ? '150px' : ''};`"
+                    :position="position"
+                    :iconSize="iconSize"
+                >
+                    <div class="list">
+                        <div class="item" v-for="(item,index) in '123456789123456789'" :key="index">item{{ item }}</div>
+                    </div>
+                </ExpandContainer>
+            </template>
+            <template #unocss>
+                <ExpandContainerUnocss
+                    v-model:expand="expand"
+                    :height="height"
+                    :style="`height: ${position === 'top' ? '150px' : ''};`"
+                    :position="position"
+                    :iconSize="iconSize"
+                >
+                    <div class="list">
+                        <div class="item" v-for="(item,index) in '123456789123456789'" :key="index">item{{ item }}</div>
+                    </div>
+                </ExpandContainerUnocss>
+            </template>
+        </BaseTab>
+
     </div>
 </template>
 
@@ -35,7 +57,7 @@ const expand = ref(false);
   width: 500px;
   :deep(.block-body){
     padding: 10px;
-    background-color: #f1dfdf;
+    background-color: #73F46C;
   }
   .list{
     display: flex;

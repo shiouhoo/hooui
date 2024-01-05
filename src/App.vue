@@ -1,35 +1,56 @@
 <script setup lang="ts">
-import SearchScopeInput from './package/searchscopeinput/Index.vue';
+import DemoExpandContainer from './demo/DemoExpandContainer.vue';
+import DemoSearchScopeInput from './demo/DemoSearchScopeInput.vue';
+import DemoCopy from './demo/DemoCopy.vue';
+import DemoLoading from './demo/DemoLoading.vue';
 
-const loading = ref(0);
+const selectedKeys = ref<string[]>(['Copy']);
 
-const options = [{
-    label: 'label1',
-    value: 'value1'
-}, {
-    label: 'label2',
-    value: 'value2'
-}];
-
-const select = ref('value1');
-
-const input = ref('value1');
+const coms = shallowRef([
+    {
+        name: 'Copy',
+        component: DemoCopy
+    },
+    {
+        name: 'ExpandContainer',
+        component: DemoExpandContainer
+    },
+    {
+        name: 'Loading',
+        component: DemoLoading
+    },
+    {
+        name: 'SearchScopeInput',
+        component: DemoSearchScopeInput
+    },
+]);
 
 </script>
 
 <template>
-    <header>
-        <div class="wrapper" v-h-loading="loading" h-loading-text="sdf">
-            <SearchScopeInput :options="options" v-model:select="select" v-model:input="input"></SearchScopeInput>
-        </div>
-        <div v-h-copy="true" class="flex items-center" @click="loading++">测试复制</div>
-    </header>
+    <a-layout has-sider>
+        <a-layout-sider
+            :style="{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0, top: 0, bottom: 0 }"
+        >
+            <div class="logo" ></div>
+            <a-menu v-model:selectedKeys="selectedKeys" theme="dark" mode="inline">
+                <a-menu-item v-for="(item) in coms" :key="item.name">
+                    <span class="nav-text">{{ item.name }}</span>
+                </a-menu-item>
+            </a-menu>
+        </a-layout-sider>
+        <a-layout class="flex flex-col ml-200px h-100vh" >
+            <a-layout-content class="flex-1 overscroll-auto bg-#fff p-20px" :style="{ margin: '24px 16px 0', overflow: 'initial' }">
+                <component
+                    :is="coms.find((item) => item.name === selectedKeys[0])?.component"
+                ></component>
+            </a-layout-content>
+            <a-layout-footer class="flex-shrink-0" :style="{ textAlign: 'center' }">
+                Copyright © 2023-present shiouhoo
+            </a-layout-footer>
+        </a-layout>
+    </a-layout>
 </template>
 
 <style scoped lang="less">
-.wrapper{
-  width: 500px;
-  height: 500px;
-  background: rgb(181, 206, 135);
-}
 </style>

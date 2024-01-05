@@ -12,16 +12,13 @@ function remove(el: any) {
     el.removeChild(el.instance);
 }
 
-// 创建一个自定义事件
-const event = new CustomEvent('copy-success');
-const event2 = new CustomEvent('copy-error');
 function copyText(el: any) {
     try {
         navigator.clipboard.writeText(el.innerText);
-        el.dispatchEvent(event);
+        el.dispatchEvent(el.eventSuccess);
     } catch (e) {
         console.error(e);
-        el.dispatchEvent(event2);
+        el.dispatchEvent(el.eventError);
     }
 }
 
@@ -31,6 +28,9 @@ const copy: Directive = {
         const parser = new DOMParser();
         const doc = parser.parseFromString(icon1, 'text/html');
         el.instance = doc.body.firstChild as HTMLElement;
+        // 创建一个自定义事件
+        el.eventSuccess = new CustomEvent('copy-success');
+        el.eventError = new CustomEvent('copy-error');
         el.clickHandler = function () {
             copyText(el);
         };
