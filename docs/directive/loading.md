@@ -7,7 +7,13 @@ outline: [2,3]
 
 ## 源文件
 
+<div class="un-prefer-unocss"></div>
+
 [loading.ts](https://github.com/shiouhoo/hooui/blob/main/src/directive/loading.ts)，以及同级目录下的components文件夹下的LoadingComponent组件(在组件中可以改变loading的样式)。
+
+<div class="prefer-unocss"></div>
+
+[loading.ts](https://github.com/shiouhoo/hooui/blob/main/src/directive/loading.ts)，以及同级目录下的components文件夹下的LoadingComponentUnocss组件(在组件中可以改变loading的样式)。
 
 
 ## 示例
@@ -62,8 +68,6 @@ const loading = ref(true);
 ```
 :::
 
-## 参数
-
 <script setup lang="ts">
 
 const data = [
@@ -81,4 +85,6 @@ const data = [
     }
 ];
 </script>
+
+## 参数
 <ParamsTable :data="data"></ParamsTable>

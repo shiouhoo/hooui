@@ -1,6 +1,8 @@
 import { defineConfig } from 'vitepress';
 import { demoblockPlugin, demoblockVitePlugin } from 'vitepress-theme-demoblock';
 import AutoImport from 'unplugin-auto-import/vite';
+import Unocss from 'unocss/vite';
+import unocssCongfig from '../../uno.config';
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
@@ -14,6 +16,7 @@ export default defineConfig({
     },
     vite: {
         plugins: [
+            Unocss(unocssCongfig),
             demoblockVitePlugin(),
             AutoImport({
                 imports: ['vue'],

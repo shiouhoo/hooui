@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import BaseTab from './BaseTab.vue';
 import SearchScopeInput from '../package/searchscopeinput/Index.vue';
 
 const options = [{
@@ -18,11 +18,23 @@ const input = ref('');
 
 <template>
     <div class="wrapper">
-        <SearchScopeInput
-            :options="options"
-            v-model:select="select"
-            v-model:input="input"
-        ></SearchScopeInput>
+
+        <BaseTab>
+            <template #common>
+                <SearchScopeInput
+                    :options="options"
+                    v-model:select="select"
+                    v-model:input="input"
+                ></SearchScopeInput>
+            </template>
+            <template #unocss>
+                <SearchScopeInput
+                    :options="options"
+                    v-model:select="select"
+                    v-model:input="input"
+                ></SearchScopeInput>
+            </template>
+        </BaseTab>
     </div>
 </template>
 

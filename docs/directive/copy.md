@@ -17,7 +17,7 @@ outline: [2,3]
  
 ```vue
 <template>
-    <div class="wrapper" v-h-copy @copy-success="copy(true)" @copy-error="copy(false)">
+    <div v-h-copy @copy-success="copy(true)" @copy-error="copy(false)">
         这里测试一下复制
     </div>
 </template>
@@ -36,8 +36,61 @@ function copy(secuss: boolean) {
 ```
 :::
 
-## 参数值
+### 文本过长
+
+有的时候文字超出了盒子所设定的宽度，需要用额外的样式来处理
+
+<div class="un-prefer-unocss"></div>
+
+:::demo
+ 
+```vue
+
+<template>
+    <!-- 这里wrapper的样式只是为了demo -->
+    <span class="wrapper" v-h-copy style="display: flex; align-items: center;">
+        <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+            这是一段过长的文本，父盒子有溢出隐藏，测试一下复制
+        </span>
+    </span>
+</template>
+<style scoped lang="less">
+
+.wrapper {
+    display: inline-block;
+    width: 300px;
+    padding: 0 5px;
+    border: 1px solid #ccc;
+}
+
+</style>
+```
+:::
+
+<div class="prefer-unocss"></div>
+
+:::demo
+ 
+```vue
+<template>
+    <!-- 这里的盒子只是为了demo -->
+    <div border="1px #ccc solid" class="w-300px px-5px">
+        <!-- 下面才是你想要的 -->
+        <span class="flex items-center" v-h-copy>
+            <span class="overflow-hidden text-ellipsis whitespace-nowrap">
+                这是一段过长的文本，父盒子有溢出隐藏，测试一下复制
+            </span>
+        </span>
+    </div>
+</template>
+```
+:::
+
+
 <script setup lang="ts">
+import { inject } from 'vue';
+
+const preferUnocss = inject('prefer-unocss');
 
 const data = [
     {
@@ -62,8 +115,10 @@ const data2 = [
 ];
 </script>
 
+## 参数值
 <ParamsTable :data="data"></ParamsTable>
 
 ## 事件
-<EmitTable :data="data"></EmitTable>
+<EmitTable :data="data2"></EmitTable>
+
 

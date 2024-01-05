@@ -1,19 +1,20 @@
 <template>
-    <div class="block">
+    <div class="block relative w-100% min-h-100% box-border">
         <div class="block-bg" :class="[position === 'top' ? 'isTop' : 'isBottom']">
-            <div class="block-body" :style="{'max-height': maxHeight}">
+            <div class="block-body w-100% overflow-hidden" :style="{'max-height': maxHeight}">
                 <div ref="slotRef">
                     <slot>
                     </slot>
                 </div>
             </div>
-            <div class="down-icon" :style="position === 'top' ? { bottom: maxHeight } : {}">
+            <div class="down-icon absolute left-50% cursor-pointer" :style="position === 'top' ? { bottom: maxHeight } : {}">
                 <template v-if="(!isExpand && position === 'bottom') || (isExpand && position === 'top')">
                     <slot name="down">
                         <!-- 没有展开。箭头向下 -->
                         <svg
                             @click="toggle"
                             focusable="false"
+                            class="w-100% h-100%"
                             data-icon="down"
                             fill="currentColor"
                             aria-hidden="true"
@@ -27,6 +28,7 @@
                         <svg
                             @click="toggle"
                             focusable="false"
+                            class="w-100% h-100%"
                             data-icon="up"
                             fill="currentColor"
                             aria-hidden="true"
@@ -108,22 +110,13 @@ function toggle() {
         bottom: 0;
     }
     .block-body{
-        width: 100%;
-        overflow: hidden;
         transition: max-height v-bind(duration) linear;
     }
     .down-icon{
         width: v-bind(iconHeight);
         height: v-bind(iconHeight);
-        position: absolute;
-        left: 50%;
         transition: bottom v-bind(duration) linear;
         transform: translate(-50%, 0px);
-        cursor: pointer;
-        svg{
-            width: 100%;
-            height: 100%;
-        }
     }
 }
 </style>

@@ -2,6 +2,7 @@
   "name": "hooui",
   "version": "0.0.1",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "npm run type-check && npm run build-only",
@@ -11,8 +12,8 @@
     "lint": "eslint . --fix",
     "prepare": "husky install",
     "commit": "git-cz",
-    "docs:dev": "yarn run register:components && vitepress dev docs",
-    "docs:build": "yarn run register:components && vitepress build docs",
+    "docs:dev": "npm run register:components && vitepress dev docs",
+    "docs:build": "npm run register:components && vitepress build docs",
     "docs:serve": "vitepress serve docs",
     "register:components": "vitepress-rc"
   },

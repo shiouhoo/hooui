@@ -7,7 +7,12 @@ outline: [2,3]
 
 ## 源文件
 
+<div class="un-prefer-unocss"></div>
+
 [SearchScopeInput.vue](https://github.com/shiouhoo/hooui/blob/main/src/package/searchscopeinput/Index.vue)
+<div class="prefer-unocss"></div>
+
+[SearchScopeInput.vue](https://github.com/shiouhoo/hooui/blob/main/src/package/searchscopeinput/Unocss.vue)
 
 ## 示例
 ### 向下展开
@@ -16,7 +21,7 @@ outline: [2,3]
 
 ```vue
 <template>
-    <div class="wrapper">
+    <div>
         <SearchScopeInput
             :options="options"
             v-model:select="select"

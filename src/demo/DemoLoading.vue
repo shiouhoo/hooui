@@ -17,7 +17,7 @@ const loading = ref(true);
 </script>
 <template>
     <div class="wrapper" v-h-loading="loading" :h-loading-text="text">
-        这里测试一下复制
+        这里测试一下loading
     </div>
 </template>
 
