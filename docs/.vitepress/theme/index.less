@@ -1,16 +1,19 @@
-.vp-doc table{
+.vp-doc table {
     display: table;
 }
 
-.vp-doc th, .vp-doc td {
+.vp-doc th,
+.vp-doc td {
     border: 0;
     padding: 16px;
     font-size: 16px;
 }
+
 .vp-doc tr:nth-child(2n) {
     background-color: #fff;
 }
-.vp-doc th{
+
+.vp-doc th {
     color: #000;
     font-size: 16px;
 }
@@ -22,15 +25,29 @@
 @import 'ant-design-vue/es/table/style/index.css';
 @import 'ant-design-vue/es/switch/style/index.css';
 
-.ant-table-cell:first-child{
+.ant-table-cell:first-child {
     white-space: nowrap;
 }
 
 
-.demoblock-tooltip .demoblock-tooltip-content{
+.demoblock-tooltip .demoblock-tooltip-content {
     z-index: 99;
 }
-// 隐藏兄弟节点
-.unprefer-unocss+.demoblock {
+
+.un-prefer-unocss+* {
+    display: block;
+}
+
+.prefer-unocss+* {
     display: none;
+}
+
+.docs-prefer-unocss {
+    .un-prefer-unocss+* {
+        display: none;
+    }
+
+    .prefer-unocss+* {
+        display: block;
+    }
 }

@@ -3,6 +3,7 @@ import { useComponents } from './useComponents';
 import directives from '../../../src/directive';
 
 /** 样式写在后面，防止异常现象 */
+import 'virtual:uno.css';
 import DefaultTheme from 'vitepress/theme';
 import 'vitepress-theme-demoblock/dist/theme/styles/index.css';
 import './index.less';

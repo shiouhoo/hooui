@@ -8,11 +8,19 @@ outline: [2,3]
 
 ## 源文件
 
+<div class="un-prefer-unocss"></div>
+
 [ExpandContainer.vue](https://github.com/shiouhoo/hooui/blob/main/src/package/expandcontainer/Index.vue)
+
+<div class="prefer-unocss"></div>
+
+[ExpandContainer.vue](https://github.com/shiouhoo/hooui/blob/main/src/package/expandcontainer/Unocss.vue)
 
 
 ## 示例
 ### 向下展开
+
+<div class="un-prefer-unocss"></div>
 
 :::demo
 
@@ -54,8 +62,46 @@ const expand = ref(false);
 ```
 :::
 
+<div class="prefer-unocss"></div>
+
+:::demo
+
+```vue
+<script setup lang="ts">
+
+const expand = ref(false);
+
+</script>
+
+<template>
+    <ExpandContainer
+        v-model:expand="expand"
+        height="80px"
+        :iconSize="20"
+    >
+        <div class="flex flex-wrap">
+            <div class="mb-15px w-25%" v-for="(item,index) in '123456789137458793'" :key="index">item{{ item }}</div>
+        </div>
+    </ExpandContainer>
+</template>
+
+<style scoped lang="less">
+
+:deep(.block-body){
+    padding: 10px;
+    background-color: #73f46c;
+}
+</style>
+
+```
+:::
+
 ### 向上展开
+
 采用定位实现，需要设置父类的高度
+
+<div class="un-prefer-unocss"></div>
+
 :::demo
 
 ```vue
@@ -94,6 +140,44 @@ const expand = ref(false);
         width: 25%;
     }
 }
+</style>
+
+```
+:::
+
+<div class="prefer-unocss"></div>
+
+:::demo
+
+```vue
+<script setup lang="ts">
+
+const expand = ref(false);
+
+</script>
+
+<template>
+    <div class="h-200px">
+        <ExpandContainer
+            v-model:expand="expand"
+            height="80px"
+            position="top"
+            :iconSize="20"
+        >
+            <div class="flex flex-wrap">
+                <div class="mb-15px w-25%" v-for="(item,index) in '12345678458793'" :key="index">item{{ item }}</div>
+            </div>
+        </ExpandContainer>
+    </div>
+</template>
+
+<style scoped lang="less">
+
+:deep(.block-body){
+    padding: 10px;
+    background-color: #73f46c;
+}
+
 </style>
 
 ```

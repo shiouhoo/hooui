@@ -16,7 +16,7 @@ outline: [2,3]
 
 ```vue
 <template>
-    <div class="wrapper">
+    <div>
         <SearchScopeInput
             :options="options"
             v-model:select="select"

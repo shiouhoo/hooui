@@ -19,7 +19,7 @@ const { Layout } = DefaultTheme;
 const toggleUnocssAPI = useToggleFn(
     preferUnocssKey,
     preferUnocss,
-    'prefer-composition'
+    'docs-prefer-unocss'
 );
 function useToggleFn(
     storageKey: string,
@@ -40,6 +40,8 @@ function useToggleFn(
     };
 }
 
+toggleUnocssAPI(preferUnocss.value);
+
 </script>
 <style lang='less' scoped>
 .wrapper{
@@ -48,7 +50,6 @@ function useToggleFn(
     transition: border-color 0.5s, background-color 0.5s ease;
     position: sticky;
     top: -0.5px;
-    background-color: #f9f9f9;
     padding: 10px 0;
     z-index: 10;
     color: #666;

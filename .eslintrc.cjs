@@ -19,7 +19,7 @@ module.exports = {
     },
     overrides: [
         {
-            files: ['Index.vue', 'index.vue', 'Demo.vue', 'useComponents.js'],
+            files: ['Index.vue', 'index.vue', 'Demo.vue', 'Unocss.vue', 'Base.vue', 'useComponents.js'],
             rules: {
                 'vue/multi-word-component-names': 'off',
             }

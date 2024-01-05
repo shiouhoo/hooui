@@ -12,7 +12,6 @@ outline: [2,3]
 ## 示例
 
 ### 基本使用
-<div v-if="!preferUnocss" class="unprefer-unocss"></div>
 
 :::demo
  
@@ -41,6 +40,8 @@ function copy(secuss: boolean) {
 
 有的时候文字超出了盒子所设定的宽度，需要用额外的样式来处理
 
+<div class="un-prefer-unocss"></div>
+
 :::demo
  
 ```vue
@@ -63,6 +64,25 @@ function copy(secuss: boolean) {
 }
 
 </style>
+```
+:::
+
+<div class="prefer-unocss"></div>
+
+:::demo
+ 
+```vue
+<template>
+    <!-- 这里的盒子只是为了demo -->
+    <div border="1px #ccc solid" class="w-300px px-5px">
+        <!-- 下面才是你想要的 -->
+        <span class="flex items-center" v-h-copy>
+            <span class="overflow-hidden text-ellipsis whitespace-nowrap">
+                这是一段过长的文本，父盒子有溢出隐藏，测试一下复制
+            </span>
+        </span>
+    </div>
+</template>
 ```
 :::
 
