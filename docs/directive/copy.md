@@ -9,6 +9,12 @@ outline: [2,3]
 
 [copy.ts](https://github.com/shiouhoo/hooui/blob/main/src/directive/copy.ts)
 
+::: tip
+
+该指令获取的是dom元素的`innerText`，你可以嵌套dom实现其他文字效果，但是不能出现多余的文字。
+
+:::
+
 ## 示例
 
 ### 基本使用
