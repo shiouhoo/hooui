@@ -107,6 +107,11 @@ const data2 = [
         desc: '输入框按下回车时触发，参数为输入框的值',
         params: 'value: string',
     },
+    {
+        name: 'input-click',
+        desc: '点击右侧图标时触发，参数为输入框的值',
+        params: 'value: string',
+    }
 ];
 
 const data3 = [
