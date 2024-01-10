@@ -3,6 +3,7 @@ import DemoExpandContainer from './demo/DemoExpandContainer.vue';
 import DemoSearchScopeInput from './demo/DemoSearchScopeInput.vue';
 import DemoCopy from './demo/DemoCopy.vue';
 import DemoLoading from './demo/DemoLoading.vue';
+import DemoBottomPopup from './demo/DemoBottomPopup.vue';
 
 const selectedKeys = ref<string[]>(['Copy']);
 
@@ -10,6 +11,10 @@ const coms = shallowRef([
     {
         name: 'Copy',
         component: DemoCopy
+    },
+    {
+        name: 'BottomPopup',
+        component: DemoBottomPopup
     },
     {
         name: 'ExpandContainer',
