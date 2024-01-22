@@ -1,8 +1,10 @@
 import Antd from 'ant-design-vue';
+import Vant from 'vant';
 import { useComponents } from './useComponents';
 import directives from '../../../src/directive';
 
 /** 样式写在后面，防止异常现象 */
+import 'vant/lib/index.css';
 import 'virtual:uno.css';
 import DefaultTheme from 'vitepress/theme';
 import 'vitepress-theme-demoblock/dist/theme/styles/index.css';
@@ -19,6 +21,7 @@ export default {
     enhanceApp(ctx) {
         installComponents(ctx.app);
         ctx.app.use(Antd);
+        ctx.app.use(Vant);
 
         useComponents(ctx.app);
         ctx.app.provide('prefer-unocss', preferUnocss);

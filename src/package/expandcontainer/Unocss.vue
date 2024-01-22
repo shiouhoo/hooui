@@ -93,10 +93,6 @@ function toggle() {
 </script>
 <style lang='less' scoped>
 .block {
-    box-sizing: border-box;
-    position: relative;
-    width: 100%;
-    min-height: 100%;
     .block-bg.isBottom{
         padding-bottom: v-bind(iconHeight);
     }

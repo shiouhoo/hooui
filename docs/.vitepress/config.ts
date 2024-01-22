@@ -27,7 +27,8 @@ export default defineConfig({
         // https://vitepress.dev/reference/default-theme-config
         nav: [
             { text: 'directive', link: '/directive/', activeMatch: '/directive' },
-            { text: 'components', link: '/package/expandcontainer', activeMatch: '/package' }
+            { text: 'components', link: '/package/expandcontainer', activeMatch: '/package' },
+            { text: '工具函数', link: '/utils/download', activeMatch: '/utils' }
         ],
 
         sidebar: {
@@ -47,6 +48,20 @@ export default defineConfig({
                     items: [
                         { text: 'expandcontainer', link: '/package/expandcontainer' },
                         { text: 'searchscopeinput', link: '/package/searchscopeinput' },
+                    ]
+                },
+                {
+                    text: '弹窗',
+                    items: [
+                        { text: 'bottompopup', link: '/package/bottompopup' },
+                    ]
+                }
+            ],
+            utils: [
+                {
+                    text: '工具函数',
+                    items: [
+                        { text: '下载', link: '/utils/download' },
                     ]
                 }
             ]

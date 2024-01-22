@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import BaseTab from './BaseTab.vue';
 import SearchScopeInput from '../package/searchscopeinput/Index.vue';
+import { message } from 'ant-design-vue';
 
 const options = [{
     label: 'label1',
@@ -10,9 +11,13 @@ const options = [{
     value: 'value2'
 }];
 
-const select = ref();
+const select = ref('label1');
 
 const input = ref('');
+
+function onChange(type: string, value: string) {
+    message.info(type + ':' + value);
+}
 
 </script>
 
@@ -25,6 +30,11 @@ const input = ref('');
                     :options="options"
                     v-model:select="select"
                     v-model:input="input"
+                    @input-blur="(value) => onChange('input-blur',value)"
+                    @input-change="(value) => onChange('input-change',value)"
+                    @input-enter="(value) => onChange('input-enter',value)"
+                    @select-change="(value) => onChange('select-change',value)"
+                    @input-click="(value) => onChange('input-click',value)"
                 ></SearchScopeInput>
             </template>
             <template #unocss>
@@ -32,6 +42,11 @@ const input = ref('');
                     :options="options"
                     v-model:select="select"
                     v-model:input="input"
+                    @input-blur="(value) => onChange('input-blur',value)"
+                    @input-change="(value) => onChange('input-change',value)"
+                    @input-enter="(value) => onChange('input-enter',value)"
+                    @select-change="(value) => onChange('select-change',value)"
+                    @input-click="(value) => onChange('input-click',value)"
                 ></SearchScopeInput>
             </template>
         </BaseTab>

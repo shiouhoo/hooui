@@ -1,6 +1,6 @@
 <template>
     <Layout>
-        <template #sidebar-nav-before>
+        <template  v-if="show" #sidebar-nav-before>
             <div class="wrapper">
                 <span>是否使用 unocss：</span>
                 <a-switch :checked="preferUnocss" @change="toggleUnocssAPI" />
@@ -12,7 +12,13 @@
 <script lang='ts' setup>
 import DefaultTheme from 'vitepress/theme';
 import { preferUnocssKey, preferUnocss } from '../preferences';
-import { Ref } from 'vue';
+import { Ref, computed } from 'vue';
+import { useRoute } from 'vitepress';
+const route = useRoute();
+
+const show = computed(() =>
+    /^\/hooui\/(directive|package)\//.test(route.path)
+);
 
 const { Layout } = DefaultTheme;
 
