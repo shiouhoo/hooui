@@ -17,7 +17,7 @@ import { useRoute } from 'vitepress';
 const route = useRoute();
 
 const show = computed(() =>
-    /^\/(directive|components)\//.test(route.path)
+    /^\/hooui\/(directive|package)\//.test(route.path)
 );
 
 const { Layout } = DefaultTheme;

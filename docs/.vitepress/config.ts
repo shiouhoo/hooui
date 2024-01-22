@@ -49,6 +49,12 @@ export default defineConfig({
                         { text: 'expandcontainer', link: '/package/expandcontainer' },
                         { text: 'searchscopeinput', link: '/package/searchscopeinput' },
                     ]
+                },
+                {
+                    text: '弹窗',
+                    items: [
+                        { text: 'bottompopup', link: '/package/bottompopup' },
+                    ]
                 }
             ],
             utils: [
