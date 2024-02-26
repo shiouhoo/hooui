@@ -28,7 +28,8 @@ export default defineConfig({
         nav: [
             { text: 'directive', link: '/directive/', activeMatch: '/directive' },
             { text: 'components', link: '/package/expandcontainer', activeMatch: '/package' },
-            { text: '工具函数', link: '/utils/download', activeMatch: '/utils' }
+            { text: '工具函数', link: '/utils/download', activeMatch: '/utils' },
+            { text: 'hooks', link: '/hooks/useTabScroll', activeMatch: '/hooks' }
         ],
 
         sidebar: {
@@ -62,6 +63,14 @@ export default defineConfig({
                     text: '工具函数',
                     items: [
                         { text: '下载', link: '/utils/download' },
+                    ]
+                }
+            ],
+            hooks: [
+                {
+                    text: 'hooks',
+                    items: [
+                        { text: 'useTabScroll', link: '/hooks/useTabScroll' },
                     ]
                 }
             ]

@@ -2,34 +2,37 @@ import { isRef, onMounted, onUnmounted, ref, watch, type Ref } from 'vue';
 
 interface TabScroll {
     key: string | number;
-    value: HTMLElement | Ref<HTMLElement | null> | null;
+    value: HTMLElement | Ref<HTMLElement>;
 }
 
-function getDom(target: Ref<HTMLElement | null> | HTMLElement | null): HTMLElement | null {
+function getDom(target: Ref<HTMLElement> | HTMLElement): HTMLElement {
     if (isRef(target)) {
         return target.value;
     }else if(typeof target === 'string') {
-        return document.getElementById(target);
+        if(!document.getElementById(target)) {
+            throw new Error(`useTabScroll: 节点目标错误，没有找到id为${target}的元素`);
+        }
+        return document.getElementById(target)!;
     }else {
         return target;
     }
 }
 // 获取元素距离滚动容器顶部的距离
-function getOffsetTop(element, parent) {
+function getOffsetTop(element: HTMLElement, parent: HTMLElement | Window) {
     const pTop = parent instanceof Window ? 0 : parent.offsetTop;
     return element.offsetTop - pTop;
 }
 
 function debounce(func: ()=>void, wait:number) {
-    let timeout;
+    let timeout: number | null = null;
     return ()=>{
         if(timeout) {
             return;
         }
         timeout = setTimeout(()=>{
             func();
+            timeout && clearTimeout(timeout);
             timeout = null;
-            clearTimeout(timeout);
         }, wait);
     };
 }
@@ -40,7 +43,7 @@ export function useTabScroll(target: TabScroll[], scrollContainer: Ref<HTMLEleme
     let changeTab: (key: string | number) => void | any;
 
     // 监听tabActive变化
-    function watchHandler(val) {
+    function watchHandler(val: string | number | undefined) {
         const element = getDom(target.find((item) => item.key === val)!.value);
         if (element) {
             // 先移除滚动事件监听
@@ -49,20 +52,20 @@ export function useTabScroll(target: TabScroll[], scrollContainer: Ref<HTMLEleme
                 top: getOffsetTop(element, scrollBox) - targetTop,
                 behavior: 'smooth'
             });
-            changeTab(val);
+            val && changeTab(val);
             // 滚动到指定位置后再监听滚动事件
             setTimeout(() => {
                 scrollBox?.addEventListener('scroll', handleScroll);
-            }, 300);
+            }, 500);
         }
     }
     let unwatch = watch(tabActive, watchHandler);
 
     // 滚动容器
-    let scrollBox: HTMLElement | Window | null = window;
+    let scrollBox: HTMLElement | Window = window;
     const handleScroll = debounce(() => {
-        // 获取跟滚动容器顶部的距离
-        const top = (scrollBox instanceof Window ? scrollBox.pageYOffset : scrollBox!.scrollTop) + targetTop;
+        // 获取当前位置到滚动容器顶部的距离
+        const top = (scrollBox instanceof Window ? scrollBox.scrollY : scrollBox!.scrollTop) + targetTop;
 
         for(let i = 0;i < target.length - 1;i++) {
             const tabDom = target[i];
@@ -96,7 +99,11 @@ export function useTabScroll(target: TabScroll[], scrollContainer: Ref<HTMLEleme
 
     onMounted(() => {
         if (typeof scrollContainer === 'string') {
-            scrollBox = document.getElementById(scrollContainer);
+            const dom = document.getElementById(scrollContainer);
+            if(!dom) {
+                throw new Error(`useTabScroll: 容器目标错误，没有找到id为${scrollContainer}的元素`);
+            }
+            scrollBox = dom;
         }
         handleScroll();
         scrollBox?.addEventListener('scroll', handleScroll);

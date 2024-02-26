@@ -2,19 +2,19 @@
 import { message } from 'ant-design-vue';
 import { useTabScroll } from '../hooks';
 
-const one = ref<HTMLElement | null>(null);
-const two = ref<HTMLElement | null>(null);
-const three = ref<HTMLElement | null>(null);
+const one = ref<HTMLElement>();
+const two = ref<HTMLElement>();
+const three = ref<HTMLElement>();
 
 const { tabActive, onChange } = useTabScroll([{
     key: 'one',
-    value: one,
+    value: one as Ref<HTMLElement>,
 }, {
     key: 'two',
-    value: two,
+    value: two as Ref<HTMLElement>,
 }, {
     key: 'three',
-    value: three,
+    value: three as Ref<HTMLElement>,
 }], 'scroll-box');
 
 onChange(()=>{
