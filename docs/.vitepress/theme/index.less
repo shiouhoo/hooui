@@ -1,21 +1,21 @@
 .vp-doc table {
-    display: table;
+    display: table ;
 }
 
 .vp-doc th,
 .vp-doc td {
-    border: 0;
-    padding: 16px;
-    font-size: 16px;
+    border: 0 ;
+    padding: 16px ;
+    font-size: 16px ;
 }
 
 .vp-doc tr:nth-child(2n) {
-    background-color: #fff;
+    background-color: #fff ;
 }
 
 .vp-doc th {
     color: #000;
-    font-size: 16px;
+    font-size: 16px !important;
 }
 
 /* antdv,打包后有顺序问题，所以提出来 */
@@ -57,3 +57,19 @@
 /**
  * vant
  */
+
+
+/**
+ * dark
+ */
+.dark{
+    .ant-table-container,table{
+        
+        border-color: var(--vp-c-border) !important;
+    }
+    th,td{
+        color: #cfd3dc !important;
+        background-color: #141414 !important;
+        border-color: var(--vp-c-border) !important;
+    }
+}
