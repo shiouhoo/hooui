@@ -4,6 +4,7 @@ import DemoSearchScopeInput from './demo/DemoSearchScopeInput.vue';
 import DemoCopy from './demo/DemoCopy.vue';
 import DemoLoading from './demo/DemoLoading.vue';
 import DemoBottomPopup from './demo/DemoBottomPopup.vue';
+import DemoTabScroll from './demo/DemoTabScroll.vue';
 
 const selectedKeys = ref<string[]>(['Copy']);
 
@@ -28,6 +29,10 @@ const coms = shallowRef([
         name: 'SearchScopeInput',
         component: DemoSearchScopeInput
     },
+    {
+        name: 'TabScroll',
+        component: DemoTabScroll
+    }
 ]);
 
 </script>
@@ -45,7 +50,7 @@ const coms = shallowRef([
             </a-menu>
         </a-layout-sider>
         <a-layout class="flex flex-col ml-200px h-100vh" >
-            <a-layout-content class="flex-1 overscroll-auto bg-#fff p-20px" :style="{ margin: '24px 16px 0', overflow: 'initial' }">
+            <a-layout-content class="flex-1 overscroll-auto bg-#fff p-20px" :style="{ margin: '24px 16px 0', overflow: 'auto' }">
                 <component
                     :is="coms.find((item) => item.name === selectedKeys[0])?.component"
                 ></component>
