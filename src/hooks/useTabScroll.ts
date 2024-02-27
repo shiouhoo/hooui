@@ -12,7 +12,7 @@ function getDom(target: TabValue): HTMLElement {
         return target.value;
     }else if(typeof target === 'string') {
         if(!document.querySelector(target)) {
-            throw new Error(`useTabScroll: 节点目标错误，没有找到id为${target}的元素`);
+            throw new Error(`useTabScroll: 节点目标错误，没有找到${target}的元素`);
         }
         return document.querySelector(target)!;
     }else {
@@ -107,12 +107,9 @@ export function useTabScroll(target: TabScroll[], scrollContainer: Ref<HTMLEleme
     }, 200);
 
     onMounted(() => {
-        if (typeof scrollContainer === 'string') {
-            const dom = document.querySelector(scrollContainer) as HTMLElement;
-            if(!dom) {
-                throw new Error(`useTabScroll: 容器目标错误，没有找到id为${scrollContainer}的元素`);
-            }
-            scrollBox = dom;
+        scrollBox = getDom(scrollContainer);
+        if (!scrollBox) {
+            throw new Error(`useTabScroll: 容器目标错误，没有找到${scrollContainer}的元素`);
         }
         // 一开始会触发一次滚动事件，根据实际情况判断是否需要
         handleScroll();

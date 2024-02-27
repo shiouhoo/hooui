@@ -36,7 +36,7 @@ const { tabActive, onChange } = useTabScroll([{
 }, {
     key: 'three',
     value: three as Ref<HTMLElement>,
-}], 'scroll-box');
+}], '#scroll-box');
 
 onChange(()=>{
     message.info('滚动到了' + tabActive.value);
@@ -91,7 +91,7 @@ const data = [
     },
     {
         name: '第二个参数',
-        desc: '滚动容器，ref或者id或者节点，不填默认为window',
+        desc: '滚动容器，ref或者支持querySelector的字符串或者节点，不填默认为window',
         type: 'Ref<HTMLElement> | string | HTMLElement',
         defaultValue: 'window',
     },
@@ -106,8 +106,8 @@ const data2 = [
     },
     {
         name: 'value',
-        desc: 'tab的节点，用于滚动到这个节点时触发事件',
-        type: 'HTMLElement | Ref<HTMLElement>',
+        desc: 'tab的节点，用于滚动到这个节点时触发事件,如果是HTMLElement类型，请确保节点存在',
+        type: ' HTMLElement | Ref<HTMLElement> | string',
         defaultValue: '-',
     },
 ];

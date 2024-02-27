@@ -15,7 +15,7 @@ const { tabActive, onChange } = useTabScroll([{
 }, {
     key: 'three',
     value: three as Ref<HTMLElement>,
-}], 'scroll-box');
+}], '#scroll-box');
 
 onChange(()=>{
     message.info('滚动到了' + tabActive.value);
