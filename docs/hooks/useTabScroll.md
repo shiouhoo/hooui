@@ -45,7 +45,7 @@ onChange(()=>{
 </script>
 <template>
     <div class="h-400px flex flex-col">
-        <div class="flex-shrink-0 text-20px ">
+        <div class="flex-shrink-0 text-20px flex gap-20px">
             <div
                 :class="{'text-red': tabActive === 'one'}"
                 class="cursor-pointer"
@@ -78,6 +78,74 @@ onChange(()=>{
 ```
 :::
 
+### 在弹窗中使用
+
+由于默认实在onMounted中绑定滚动事件的的，所以在弹窗中使用的时候需要指定在什么时候绑定(或则可以将弹窗内容代码放在另一个组件中保证正确触发滚动容器的事件绑定)。
+
+:::demo
+
+```vue
+<script setup lang="ts">
+import { message } from 'ant-design-vue';
+import { useTabScroll } from '../../src/hooks/useTabScroll';
+
+const open = ref<boolean>(false);
+const showModal = () => {
+    open.value = true;
+};
+
+const { tabActive: tabModal, onChange } = useTabScroll([{
+    key: 'one',
+    value: '#first',
+}, {
+    key: 'two',
+    value: '#second',
+}, {
+    key: 'three',
+    value: '#third',
+}], '#scroll-container', 20, open);
+
+onChange(()=>{
+    message.info('滚动到了' + tabModal.value);
+});
+
+</script>
+<template>
+    <a-button class="w-180px" type="primary" @click="showModal">弹窗内使用</a-button>
+    <a-modal v-model:visible="open" title="Basic Modal" >
+        <div class="flex gap-20px text-20px ">
+            <div
+                :class="{'text-red': tabModal === 'one'}"
+                class="cursor-pointer"
+                @click="tabModal = 'one'"
+            >1</div>
+            <div
+                :class="{'text-red': tabModal === 'two'}"
+                class="cursor-pointer"
+                @click="tabModal = 'two'"
+            >2</div>
+            <div
+                :class="{'text-red': tabModal === 'three'}"
+                class="cursor-pointer"
+                @click="tabModal = 'three'"
+            >3</div>
+        </div>
+        <div id="scroll-container" class="flex-1 w-300px h-400px overflow-auto bg-#f5f5f5">
+            <div id="first" class="h-300px">
+                这是第一个tab
+            </div>
+            <div id="second" class="h-200px">
+                这是第二个tab
+            </div>
+            <div id="third" class="h-400px">
+                这是第三个tab
+            </div>
+        </div>
+    </a-modal>
+</template>
+```
+:::
+
 ## props 参数
 
 <script setup lang="ts">
@@ -94,6 +162,18 @@ const data = [
         desc: '滚动容器，ref或者支持querySelector的字符串或者节点，不填默认为window',
         type: 'Ref<HTMLElement> | string | HTMLElement',
         defaultValue: 'window',
+    },
+    {
+        name: '第三个参数',
+        desc: '目标节点距离顶部的大小，有的时候节点完全从顶部开始并不好看',
+        type: 'number',
+        defaultValue: '20',
+    },
+    {
+        name: '第四个参数',
+        desc: '绑定和解绑的ref变量，为真时绑定滚动事件（确保滚动容器存在），为假时解绑滚动事件',
+        type: 'Ref<boolean>',
+        defaultValue: 'onMounted时绑定，onUnmounted时解绑',
     },
 ];
 

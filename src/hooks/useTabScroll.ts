@@ -1,4 +1,4 @@
-import { isRef, onMounted, onUnmounted, ref, watch, type Ref } from 'vue';
+import { isRef, onMounted, onUnmounted, ref, watch, nextTick, type Ref } from 'vue';
 
 type TabValue = HTMLElement | Ref<HTMLElement> | string;
 
@@ -12,7 +12,7 @@ function getDom(target: TabValue): HTMLElement {
         return target.value;
     }else if(typeof target === 'string') {
         if(!document.querySelector(target)) {
-            throw new Error(`useTabScroll: 节点目标错误，没有找到${target}的元素`);
+            console.error(`useTabScroll: 节点目标错误，没有找到${target}的元素`);
         }
         return document.querySelector(target)!;
     }else {
@@ -39,7 +39,11 @@ function debounce(func: ()=>void, wait:number) {
     };
 }
 
-export function useTabScroll(target: TabScroll[], scrollContainer: Ref<HTMLElement | null> | string | HTMLElement | Window = window, targetTop = 20) {
+export function useTabScroll(
+    target: TabScroll[],
+    scrollContainer: Ref<HTMLElement | null> | string | HTMLElement | Window = window, targetTop = 20,
+    trigger?: Ref<Boolean>
+) {
     const tabActive = ref<string | number>();
 
     let changeTab: (key: string | number) => void | any;
@@ -78,6 +82,11 @@ export function useTabScroll(target: TabScroll[], scrollContainer: Ref<HTMLEleme
         unwatch = watch(tabActive, watchHandler);
     }
     const handleScroll = debounce(() => {
+        // 获取滚动容器
+        scrollBox = getDom(scrollContainer as TabValue);
+        if (!scrollBox) {
+            console.error(`useTabScroll: 容器目标错误，没有找到${scrollContainer}的元素`);
+        }
         // 获取当前位置到滚动容器顶部的距离
         const top = (scrollBox instanceof Window ? scrollBox.scrollY : scrollBox!.scrollTop) + targetTop;
 
@@ -107,13 +116,12 @@ export function useTabScroll(target: TabScroll[], scrollContainer: Ref<HTMLEleme
     }, 200);
 
     onMounted(() => {
-        scrollBox = getDom(scrollContainer);
-        if (!scrollBox) {
-            throw new Error(`useTabScroll: 容器目标错误，没有找到${scrollContainer}的元素`);
+        if(!trigger) {
+            scrollBox = getDom(scrollContainer as TabValue);
+            // 一开始会触发一次滚动事件，根据实际情况判断是否需要
+            handleScroll();
+            scrollBox?.addEventListener('scroll', handleScroll);
         }
-        // 一开始会触发一次滚动事件，根据实际情况判断是否需要
-        handleScroll();
-        scrollBox?.addEventListener('scroll', handleScroll);
     });
 
     onUnmounted(() => {
@@ -126,6 +134,20 @@ export function useTabScroll(target: TabScroll[], scrollContainer: Ref<HTMLEleme
                 func(key);
             }
         };
+    }
+
+    if(trigger) {
+        watch(trigger, (val) => {
+            nextTick(()=>{
+                scrollBox = getDom(scrollContainer as TabValue);
+                if(val) {
+                    handleScroll();
+                    scrollBox?.addEventListener('scroll', handleScroll);
+                }else{
+                    scrollBox?.removeEventListener('scroll', handleScroll);
+                }
+            });
+        });
     }
 
     return {
