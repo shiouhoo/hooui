@@ -1,18 +1,20 @@
 import { isRef, onMounted, onUnmounted, ref, watch, type Ref } from 'vue';
 
+type TabValue = HTMLElement | Ref<HTMLElement> | string;
+
 interface TabScroll {
     key: string | number;
-    value: HTMLElement | Ref<HTMLElement>;
+    value: HTMLElement | Ref<HTMLElement> | string;
 }
 
-function getDom(target: Ref<HTMLElement> | HTMLElement): HTMLElement {
+function getDom(target: TabValue): HTMLElement {
     if (isRef(target)) {
         return target.value;
     }else if(typeof target === 'string') {
-        if(!document.getElementById(target)) {
+        if(!document.querySelector(target)) {
             throw new Error(`useTabScroll: 节点目标错误，没有找到id为${target}的元素`);
         }
-        return document.getElementById(target)!;
+        return document.querySelector(target)!;
     }else {
         return target;
     }
@@ -44,7 +46,12 @@ export function useTabScroll(target: TabScroll[], scrollContainer: Ref<HTMLEleme
 
     // 监听tabActive变化
     function watchHandler(val: string | number | undefined) {
-        const element = getDom(target.find((item) => item.key === val)!.value);
+        const tab = target.find((item) => item.key === val);
+        if (!tab) {
+            console.error('useTabScroll: tabActive值错误，未找到对应的tab');
+            return;
+        }
+        const element = getDom(tab!.value);
         if (element) {
             // 先移除滚动事件监听
             scrollBox?.removeEventListener('scroll', handleScroll);
@@ -52,8 +59,8 @@ export function useTabScroll(target: TabScroll[], scrollContainer: Ref<HTMLEleme
                 top: getOffsetTop(element, scrollBox) - targetTop,
                 behavior: 'smooth'
             });
-            val && changeTab(val);
-            // 滚动到指定位置后再监听滚动事件
+            changeTab && val && changeTab(val);
+            // 滚动到指定位置后再监听滚动事件,但是又不知道什么时候滚动结束，所以设置一个延迟
             setTimeout(() => {
                 scrollBox?.addEventListener('scroll', handleScroll);
             }, 500);
@@ -63,6 +70,13 @@ export function useTabScroll(target: TabScroll[], scrollContainer: Ref<HTMLEleme
 
     // 滚动容器
     let scrollBox: HTMLElement | Window = window;
+    function updateTab(key: string | number) {
+        unwatch();
+        const flag = tabActive.value !== key;
+        tabActive.value = key;
+        changeTab && flag && changeTab(key);
+        unwatch = watch(tabActive, watchHandler);
+    }
     const handleScroll = debounce(() => {
         // 获取当前位置到滚动容器顶部的距离
         const top = (scrollBox instanceof Window ? scrollBox.scrollY : scrollBox!.scrollTop) + targetTop;
@@ -76,22 +90,17 @@ export function useTabScroll(target: TabScroll[], scrollContainer: Ref<HTMLEleme
                 // 获取当前tab距离滚动容器顶部的距离
                 const tabTop = getOffsetTop(element, scrollBox);
                 const nextTabTop = getOffsetTop(nextElement, scrollBox);
-                if (top >= tabTop && top < nextTabTop) {
+                if(i === 0 && top < tabTop) {
+                    updateTab(tabDom.key);
+                    break;
+                }else if (top >= tabTop && top < nextTabTop) {
                     // 防止重复触发
-                    unwatch();
-                    const flag = tabActive.value !== tabDom.key;
-                    tabActive.value = tabDom.key;
-                    changeTab && flag && changeTab(tabDom.key);
-                    unwatch = watch(tabActive, watchHandler);
+                    updateTab(tabDom.key);
                     break;
                 }
                 // 如果滚动到最后一个tab
                 if(i === target.length - 2 && top >= nextTabTop) {
-                    unwatch();
-                    const flag = tabActive.value !== nextTabDom.key;
-                    tabActive.value = nextTabDom.key;
-                    changeTab && flag && changeTab(nextTabDom.key);
-                    unwatch = watch(tabActive, watchHandler);
+                    updateTab(nextTabDom.key);
                 }
             }
         }
@@ -99,12 +108,13 @@ export function useTabScroll(target: TabScroll[], scrollContainer: Ref<HTMLEleme
 
     onMounted(() => {
         if (typeof scrollContainer === 'string') {
-            const dom = document.getElementById(scrollContainer);
+            const dom = document.querySelector(scrollContainer) as HTMLElement;
             if(!dom) {
                 throw new Error(`useTabScroll: 容器目标错误，没有找到id为${scrollContainer}的元素`);
             }
             scrollBox = dom;
         }
+        // 一开始会触发一次滚动事件，根据实际情况判断是否需要
         handleScroll();
         scrollBox?.addEventListener('scroll', handleScroll);
     });
