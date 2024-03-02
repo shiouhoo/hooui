@@ -7,7 +7,6 @@ resources:
     component: fc3  # 组件名称
     props:
       region: ${vars.region} # 地域
-      logConfig: auto
       code: deploy
       runtime: custom
       functionName: hooui-docs
@@ -31,7 +30,6 @@ resources:
     component: fc3-domain
     props:
       region: ${vars.region}
-      logConfig: auto
       domainName: hooui.yhvenus.top
       protocol: HTTP
       routeConfig:
