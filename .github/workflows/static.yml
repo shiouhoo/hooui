@@ -34,9 +34,18 @@ jobs:
       - uses: actions/setup-node@v4.0.1
         with:
           node-version: 16
+          registry-url: https://registry.npmjs.org/
       - name: Deploy to GitHub Pages
         run: npm i pnpm -g && pnpm install --no-frozen-lockfile && pnpm docs:build
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           folder: docs/.vitepress/dist
+
+      - name: Install Serverless CLI
+        run: npm install -g @serverless-devs/s
+      - name: Deploy to Aliyun Serverless
+        run: s deploy -y --use-local
+        env:
+          ACCESS_KEY_ID: ${{ secrets.ACCESS_KEY_ID }}
+          ACCESS_KEY_SECRET: ${{ secrets.ACCESS_KEY_SECRET }}

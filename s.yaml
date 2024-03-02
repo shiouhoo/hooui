@@ -1,0 +1,19 @@
+services:
+  vitepress-service:  # 模块名称
+    component: devsapp/start # 组件名称
+    props:
+      region: cn-hangzhou # 地域
+      service: # 服务配置
+        name: vitepressApp # service名称
+      function:
+        name: vitepressFunction
+        codeUri: docs/.vitepress/dist
+        handler: index.handler
+        runtime: nodejs14
+      triggers:
+        - name: httpTrigger
+          type: http
+          config:
+            authType: anonymous
+            methods: 
+              - GET
