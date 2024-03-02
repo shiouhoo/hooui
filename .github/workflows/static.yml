@@ -45,7 +45,5 @@ jobs:
       - name: Install Serverless CLI
         run: npm install -g @serverless-devs/s
       - name: Deploy to Aliyun Serverless
+        run: s config add --AccessKeyID ${{secrets.ACCESS_KEY_ID}} --AccessKeySecret ${{secrets.ACCESS_KEY_SECRET}} -a default -f
         run: s deploy -y --use-local
-        env:
-          ACCESS_KEY_ID: ${{ secrets.ACCESS_KEY_ID }}
-          ACCESS_KEY_SECRET: ${{ secrets.ACCESS_KEY_SECRET }}
