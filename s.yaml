@@ -9,7 +9,7 @@ resources:
       code: docs/.vitepress/dist
       handler: index.handler
       runtime: nodejs16
-      funtionaName: vitepressFunc
+      functionName: vitepressFunc
       triggers:
         - triggerName: httpTrigger
           triggerType: http
