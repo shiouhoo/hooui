@@ -50,6 +50,6 @@ jobs:
         run: |
           mkdir deploy
           cp -r docs/.vitepress/dist deploy/hooui
-          cp nginx.conf deploy/nginx.conf
+          cp -r .serverless deploy
       - name: Deploy to Aliyun Serverless
         run: s deploy -y --use-local
