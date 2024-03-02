@@ -1,19 +1,38 @@
 edition: 3.0.0 # 命令行YAML规范版本，遵循语义化版本（Semantic Versioning）规范
 name: hooui # 项目名称
-
+vars: # 全局变量
+  region: cn-chengdu
 resources:
   hooui: #  项目名称
     component: fc3  # 组件名称
     props:
-      region: cn-chengdu # 地域
+      region: ${vars.region} # 地域
       code: docs/.vitepress/dist
-      handler: index.handler
-      runtime: nodejs16
-      functionName: vitepressFunc
-      triggers:
-        - triggerName: httpTrigger
-          triggerType: http
-          triggerConfig:
-            authType: anonymous
-            methods: 
-              - GET
+      runtime: custom
+      functionName: hooui-docs
+      customRuntimeConfig:
+        command:
+          - nginx
+        port: 9000
+        args:
+          - '-c'
+          - '/code/nginx.conf'
+          - '-g'
+          - 'daemon off;'
+      # triggers:
+      #   - triggerName: httpTrigger
+      #     triggerType: http
+      #     triggerConfig:
+      #       authType: anonymous
+      #       methods: 
+      #         - GET
+  hooui-domain:
+    component: fc3-domain
+    props:
+      region: ${vars.region}
+      domainName: auto
+      protocol: HTTP
+      routeConfig:
+        routes:
+          - path: /*
+            functionName: hooui-docs
