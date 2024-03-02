@@ -7,7 +7,7 @@ resources:
     component: fc3  # 组件名称
     props:
       region: ${vars.region} # 地域
-      code: hooui/docs/.vitepress/dist
+      code: hooui
       runtime: custom
       functionName: hooui-docs
       customRuntimeConfig:
@@ -16,7 +16,7 @@ resources:
         port: 9000
         args:
           - '-c'
-          - '/code/nginx.conf'
+          - '/code/hooui/nginx.conf'
           - '-g'
           - 'daemon off;'
       # triggers:
