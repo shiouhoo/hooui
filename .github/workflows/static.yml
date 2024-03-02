@@ -53,4 +53,4 @@ jobs:
           cp -r .serverless/* deploy
           mv deploy/hooui/index.html deploy/index.html
       - name: Deploy to Aliyun Serverless
-        run: s deploy -y --use-local -t ./serverless/s.yaml
+        run: s deploy -y --use-local -t .serverless/s.yaml
