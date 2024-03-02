@@ -48,6 +48,8 @@ jobs:
         run: s config add --AccessKeyID ${{secrets.ACCESS_KEY_ID}} --AccessKeySecret ${{secrets.ACCESS_KEY_SECRET}} -a default -f
       - name: Prepare deployment directory
         run: |
-           cp nginx.conf docs/.vitepress/dist/nginx.conf
+          mkdir hooui
+          cp -r docs/.vitepress/dist hooui
+          cp nginx.conf hooui/nginx.conf
       - name: Deploy to Aliyun Serverless
         run: s deploy -y --use-local
