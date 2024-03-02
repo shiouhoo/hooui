@@ -46,5 +46,8 @@ jobs:
         run: npm install -g @serverless-devs/s
       - name: Serverless Config
         run: s config add --AccessKeyID ${{secrets.ACCESS_KEY_ID}} --AccessKeySecret ${{secrets.ACCESS_KEY_SECRET}} -a default -f
+      - name: Prepare deployment directory
+        run: |
+           cp nginx.conf docs/.vitepress/dist/nginx.conf
       - name: Deploy to Aliyun Serverless
         run: s deploy -y --use-local
