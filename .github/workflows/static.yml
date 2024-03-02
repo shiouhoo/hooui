@@ -49,7 +49,7 @@ jobs:
       - name: Prepare deployment directory
         run: |
           mkdir hooui
-          cp -r docs/.vitepress/dist hooui
+          cp -r docs/.vitepress/dist hooui/
           cp nginx.conf hooui/nginx.conf
       - name: Deploy to Aliyun Serverless
         run: s deploy -y --use-local
