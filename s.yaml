@@ -2,21 +2,18 @@ edition: 3.0.0 # 命令行YAML规范版本，遵循语义化版本（Semantic Ve
 name: hooui # 项目名称
 
 resources:
-  nextjs_portal: #  项目名称
+  hooui: #  项目名称
     component: fc3  # 组件名称
     props:
       region: cn-chengdu # 地域
-      service: # 服务配置
-        name: vitepressApp # service名称
-      function:
-        name: vitepressFunction
-        codeUri: docs/.vitepress/dist
-        handler: index.handler
-        runtime: nodejs16
+      code: docs/.vitepress/dist
+      handler: index.handler
+      runtime: nodejs16
+      funtionaName: vitepressFunc
       triggers:
-        - name: httpTrigger
-          type: http
-          config:
+        - triggerName: httpTrigger
+          triggerType: http
+          triggerConfig:
             authType: anonymous
             methods: 
               - GET
