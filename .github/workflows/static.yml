@@ -51,6 +51,6 @@ jobs:
           mkdir deploy
           cp -r docs/.vitepress/dist deploy/hooui
           cp -r .serverless/* deploy
-          mv deploy/hooui/index.html deplay/index.html
+          mv deploy/hooui/index.html deploy/index.html
       - name: Deploy to Aliyun Serverless
         run: s deploy -y --use-local -t ./serverless/s.yaml
