@@ -1,8 +1,8 @@
 services:
   vitepress-service:  # 模块名称
-    component: devsapp/start # 组件名称
+    component: devsapp/http  # 组件名称
     props:
-      region: cn-hangzhou # 地域
+      region: cn-chengdu # 地域
       service: # 服务配置
         name: vitepressApp # service名称
       function:
