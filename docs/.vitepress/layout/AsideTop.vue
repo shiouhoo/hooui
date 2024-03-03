@@ -6,6 +6,10 @@
                 <a-switch :checked="preferUnocss" @change="toggleUnocssAPI" />
             </div>
         </template>
+        <template  #nav-bar-title-after>
+            <!-- <span class="pl-10px text-16px">v</span> -->
+            <div class="pl-20px text-14px text-[rgba(60,60,67)] font-400">{{ pkg.version }}</div>
+        </template>
     </Layout>
 </template>
 
@@ -14,6 +18,7 @@ import DefaultTheme from 'vitepress/theme';
 import { preferUnocssKey, preferUnocss } from '../preferences';
 import { Ref, computed } from 'vue';
 import { useRoute } from 'vitepress';
+import pkg from '../../../package.json';
 const route = useRoute();
 
 const show = computed(() =>

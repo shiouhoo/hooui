@@ -8,7 +8,7 @@ import unocssCongfig from '../../uno.config';
 export default defineConfig({
     title: 'hooui',
     base: '/hooui',
-    description: '这是一个常用的vue3组件库',
+    description: '这是一个vue3工具集',
     markdown: {
         config: (md) => {
             md.use(demoblockPlugin);
@@ -29,7 +29,7 @@ export default defineConfig({
             { text: 'directive', link: '/directive/', activeMatch: '/directive' },
             { text: 'components', link: '/package/expandcontainer', activeMatch: '/package' },
             { text: '工具函数', link: '/utils/download', activeMatch: '/utils' },
-            { text: 'hooks', link: '/hooks/useTabScroll', activeMatch: '/hooks' }
+            { text: 'hooks', link: '/hooks/useFullScreen', activeMatch: '/hooks' }
         ],
 
         sidebar: {
@@ -70,6 +70,7 @@ export default defineConfig({
                 {
                     text: 'hooks',
                     items: [
+                        { text: 'useFullScreen', link: '/hooks/useFullScreen' },
                         { text: 'useTabScroll', link: '/hooks/useTabScroll' },
                     ]
                 }

@@ -21,8 +21,7 @@ function getDom(target: TabValue): HTMLElement {
 }
 // 获取元素距离滚动容器顶部的距离
 function getOffsetTop(element: HTMLElement, parent: HTMLElement | Window) {
-    const pTop = parent instanceof Window ? 0 : parent.offsetTop;
-    return element.offsetTop - pTop;
+    return parent instanceof Window ? element.getBoundingClientRect().top - document.body.getBoundingClientRect().top : element.getBoundingClientRect().top - parent.getBoundingClientRect().top;
 }
 
 function debounce(func: ()=>void, wait:number) {
