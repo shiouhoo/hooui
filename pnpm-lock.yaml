@@ -26,8 +26,8 @@ devDependencies:
     specifier: ^1.3.3
     version: 1.6.1
   '@shiouhoo/eslint-config':
-    specifier: ^1.0.10
-    version: 1.0.10
+    specifier: ^1.0.11
+    version: 1.0.11
   '@tsconfig/node18':
     specifier: ^2.0.1
     version: 2.0.1
@@ -1579,8 +1579,8 @@ packages:
     resolution: {integrity: sha512-UY+FGM/2jjMkzQLn8pxcHGMaVLh9aEitG3zY2CiY7XHdLiz3bZOwa6oDxNqEMv7zZkV+cj5DOdz0cQ1BP5Hjgw==}
     dev: true
 
-  /@shiouhoo/eslint-config@1.0.10:
-    resolution: {integrity: sha512-BbHr6DrXN4SzgYPK4+1JrEiQ++2/hdEgNdqYt84YrOfqzE6SJ08yBJVQCdTk8LGHrsrB6JXKFoYgeohH8SOd8w==}
+  /@shiouhoo/eslint-config@1.0.11:
+    resolution: {integrity: sha512-2/w4oGHWRjSpGA2Tcn7nPO3ourdiPFEHjZYN1XpGqJFyQzdCnFf/cFCnvhBQgyjzVNJbkL0KXe1G1sn/Ubi2nw==}
     dev: true
 
   /@simonwep/pickr@1.8.2:

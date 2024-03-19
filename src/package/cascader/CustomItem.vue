@@ -1,8 +1,17 @@
 <template>
-    <div class="relative">
-        <a-cascader v-model:value="value" :options="options" placeholder="Please select" >
-        </a-cascader>
-        <div class="nav-menus absolute z-99 h-15rem top-2.35rem flex">
+    <div class="relative" @click.stop>
+        <div @click="openCascader">
+            <a-cascader
+                v-model:value="value"
+                :options="options"
+                placeholder="Please select"
+                ref="cascader"
+                :open="false"
+            >
+            </a-cascader>
+
+        </div>
+        <div v-if="open" class="nav-menus absolute z-99 h-15rem top-2.35rem flex">
             <RootNav :tree-data="options"></RootNav>
         </div>
     </div>
@@ -12,7 +21,16 @@
 import { ref, watch, computed, nextTick } from 'vue';
 import RootNav from './RootNav.vue';
 
-const value = ref<string[]>([]);
+const value = ref<string[]>(['zhejiang']);
+const cascader = ref<HTMLElement>();
+const open = ref(false);
+function openCascader() {
+    open.value = true;
+}
+document.addEventListener('click', (e) => {
+    open.value = false;
+});
+
 const options: Record<string, any>[] = [
     {
         value: 'zhejiang',
