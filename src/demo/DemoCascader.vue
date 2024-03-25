@@ -6,20 +6,22 @@ import { message } from 'ant-design-vue';
 const value = ref<string[]>([]);
 
 const options = ref<Record<string, any>[]>([]);
-let number = 1;
+const isFinished = ref(false);
 function loadData(data: Record<string, any> | undefined, pageNum:number) {
     setTimeout(() => {
         if(data) {
             !data.children && (data.children = []);
-            for(let i = number;i < 10;i++) {
-                data.children.push({
+            const list = [...data.children];
+            for(let i = pageNum * 10;i < pageNum * 10 + 10;i++) {
+                list.push({
                     value: 'zhejiang' + i,
                     label: 'Zhejiang' + i,
                     isLeaf: true,
                 });
             }
+            data.children = list;
         }else{
-            for(let i = number;i < 10;i++) {
+            for(let i = pageNum * 10;i < pageNum * 10 + 10;i++) {
                 options.value.push({
                     value: 'zhejiang' + i,
                     label: 'Zhejiang' + i,
@@ -30,6 +32,7 @@ function loadData(data: Record<string, any> | undefined, pageNum:number) {
         if(pageNum === 1) {
             message.success('数据加载完毕');
             data && (data.isfinished = true);
+            !data && (isFinished.value = true);
         }
     }, 1000);
 }
@@ -45,7 +48,9 @@ function loadData(data: Record<string, any> | undefined, pageNum:number) {
                     v-model:value="value"
                     :options="options"
                     :load-data="loadData"
+                    change-on-select
                     lazy
+                    :is-finished="isFinished"
                 >
                     <!-- <template #label="{data}">
                         <span>{{data.value}}</span>

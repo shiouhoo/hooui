@@ -1,5 +1,5 @@
 <template>
-    <div class="nav-menu flex flex-col w-10rem overflow-auto py-5px">
+    <div ref="menuRef" class="nav-menu flex flex-col w-10rem overflow-auto py-5px">
         <div v-for="(item,index) in treeData" :key="index" class="nav-item h-2rem flex items-center justify-between px-0.35rem flex-shrink-0 cursor-pointer hover:bg-#f5f5f5" :class="{'bg-#e6f7ff!':select[0] === item.value}" @click="clickSelectItem(item)">
             <div class="nav-label flex flex-center cursor-pointer pl-0.5rem overflow-hidden">
                 <slot name="label" :data="item">
@@ -24,7 +24,7 @@
                 viewBox="0 0 1024 1024"
             ><path d="M988 548c-19.9 0-36-16.1-36-36 0-59.4-11.6-117-34.6-171.3a440.45 440.45 0 00-94.3-139.9 437.71 437.71 0 00-139.9-94.3C629 83.6 571.4 72 512 72c-19.9 0-36-16.1-36-36s16.1-36 36-36c69.1 0 136.2 13.5 199.3 40.3C772.3 66 827 103 874 150c47 47 83.9 101.8 109.7 162.7 26.7 63.1 40.2 130.2 40.2 199.3.1 19.9-16 36-35.9 36z"/></svg>
         </div>
-        <div v-show="!props.parentRecord?.isfinished" ref="endLineRef" class="end-line flex flex-center">
+        <div v-show="!props.parentRecord?.isfinished && !props.isFinished" ref="endLineRef" class="end-line flex flex-center">
             <span class="text-#333">加载中</span>
             <svg
                 class="nav-loading w-0.75rem h-0.75rem flex-shrink-0 ml-0.5rem"
@@ -37,7 +37,7 @@
     <RootNav
         ref="nextNavRef"
         v-if="existNext"
-        :tree-data="nextTreeData"
+        v-model:tree-data="nextTreeData"
         :lazy="props.lazy"
         :index="props.index+1"
         :parent-record="props.treeData.find((item:Record<string, any>) => item.value === select[0])"
@@ -57,13 +57,17 @@ const props = withDefaults(defineProps<{
     treeData: Record<string, any>[];
     index?: number;
     lazy?: boolean;
+    isFinished?: boolean;
     parentRecord?: Record<string, any>
 }>(), {
     index: 0,
     lazy: false,
+    isFinished: false,
 });
 
-const emit = defineEmits(['change']);
+const emit = defineEmits(['change', 'update:tree-data']);
+
+const menuRef = ref<HTMLElement>();
 
 // 加载数据函数
 const loadData = inject<(label?: Record<string, any>, pageNum?: number)=>void>('loadData');
@@ -96,7 +100,7 @@ function clickSelectItem(record: Record<string, any>) {
         } else if(loadNextDataMap[record.value]) {
             nextTreeData.value = record.children;
         } else{
-            updateOptions(record);
+            updateNextOptions(record);
             loadData(record, 0);
         }
     }else{
@@ -124,13 +128,13 @@ function updateSelect(value: (string | number)[]) {
 function nextSelectChange(record:Record<string, any>, index:number, isEnd:boolean) {
     emit('change', record, index, isEnd);
 }
-// 更新options，动态加载数据
+// 更新下级options，动态加载数据
 let unwatchMap:Record<string, any> = {};
-function updateOptions(record: Record<string, any>) {
+function updateNextOptions(record: Record<string, any>) {
     loadingMap.value[record.value] = true;
-    unwatchMap[record.value] = watch(()=>record.children?.length, (value)=>{
+    unwatchMap[record.value] = watch(()=>record.children?.length, (length: number)=>{
         // 两次加载同时触发，保证先后顺序
-        if(value && record.value === select.value[0]) {
+        if(length && record.value === select.value[0]) {
             nextTreeData.value = record.children || [];
         }
         loadingMap.value[record.value] = false;
@@ -149,10 +153,12 @@ let observer: IntersectionObserver;
 if(props.lazy) {
     onMounted(()=>{
         observer = new IntersectionObserver((entries) => {
-            const isfinished = props.parentRecord?.isfinished;
-            if(entries[0].isIntersecting && !isfinished) {
+            // props.isFinished只有在第一级才有
+            const isfinish = props.parentRecord?.isfinished;
+            if(entries[0].isIntersecting && !isfinish && !props.isFinished) {
                 if(loadData) {
                     const pageNum = getLoadPageNum(props.parentRecord?.value || '__top');
+                    updateOptions();
                     loadData(props.parentRecord, pageNum);
                 }
             }
@@ -165,11 +171,24 @@ if(props.lazy) {
         }
     });
 }
+// 更新当前options，动态加载数据
+function updateOptions() {
+    if(props.parentRecord?.value) {
+        const record = props.parentRecord!;
+        const value = record.value;
+        unwatchMap[value] = watch(()=>record.children.length, (length: number)=>{
+            if(length && value === record.value) {
+                emit('update:tree-data', record.children || []);
+            }
+            unwatchMap[value]();
+        });
+    }
+}
 // 获取加载页数
 function getLoadPageNum(value: string) {
     if(value === '__top') {
-        loadLazyDataMap[value] = 2;
-        return 0;
+        !loadLazyDataMap[value] && (loadLazyDataMap[value] = 0);
+        return loadLazyDataMap[value]++;
     }
     // 第一个在点击时已经加载过，所以划到底部从第二页开始
     const pageNum = loadLazyDataMap[value] || 1;
@@ -181,10 +200,17 @@ function getLoadPageNum(value: string) {
     return pageNum;
 }
 
+// =================== 初始化 ====================
+watch(()=>props.parentRecord?.value, (treeData)=>{
+    // 滚动到顶部
+    nextTick(()=>{
+        menuRef.value?.scrollTo(0, 0);
+    });
+});
+
 defineExpose({
     clearSelect,
     updateSelect,
-    updateOptions
 });
 
 </script>

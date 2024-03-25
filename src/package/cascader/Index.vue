@@ -12,7 +12,13 @@
             </a-cascader>
         </div>
         <div v-if="init" v-show="open" class="nav-menus absolute z-99 h-15rem top-2.35rem flex">
-            <RootNav ref="nextNavRef" :tree-data="options" :lazy="props.lazy" @change="change">
+            <RootNav
+                ref="nextNavRef"
+                :tree-data="options"
+                :lazy="props.lazy"
+                :is-finished="props.isFinished"
+                @change="change"
+            >
                 <template #label="{data}: any">
                     <slot name="label" :data="data"></slot>
                 </template>
@@ -32,11 +38,13 @@ const props = withDefaults(defineProps<{
     changeOnSelect?: boolean;
     loadData?: (label: Record<string, any> | undefined, pageNum:number) => void;
     lazy?: boolean;
+    isFinished?: boolean;
 }>(), {
     value: ()=>[],
     changeOnSelect: false,
     options: ()=>[],
     lazy: false,
+    isFinished: false,
 });
 const emit = defineEmits(['update:value', 'change']);
 provide('loadData', props.loadData);
