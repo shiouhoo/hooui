@@ -1,10 +1,19 @@
 <template>
     <div ref="menuRef" class="nav-menu flex flex-col w-10rem overflow-auto py-5px">
-        <div v-for="(item,index) in treeData" :key="index" class="nav-item h-2rem flex items-center justify-between px-0.35rem flex-shrink-0 cursor-pointer hover:bg-#f5f5f5" :class="{'bg-#e6f7ff!':select[0] === item.value}" @click="clickSelectItem(item)">
+        <div v-for="(item,index) in treeData" :key="index" class="nav-item h-2rem flex items-center justify-between px-0.35rem flex-shrink-0 cursor-pointer hover:bg-#f5f5f5" :class="{'bg-#e6f7ff!': isHeighLight(item) }" @click="clickSelectItem(item)">
             <div class="nav-label flex flex-center cursor-pointer pl-0.5rem overflow-hidden">
-                <slot name="label" :data="item">
-                    <span class="nav-text -translate-y-0.08rem">{{ item.label }}</span>
-                </slot>
+                <a-checkbox :checked="select.includes(item.value)" v-if="props.multiple" @change="(e:any)=>changeMultiple(e,item)">
+                    <span @click="(e)=>(!item.isLeaf && item.children?.length > 0) && e.preventDefault()" class="nav-checkbox-contaner px-8px">
+                        <slot name="label" :data="item">
+                            <span class="nav-text -translate-y-0.06rem">{{ item.label }}</span>
+                        </slot>
+                    </span>
+                </a-checkbox>
+                <template v-else>
+                    <slot name="label" :data="item">
+                        <span class="nav-text -translate-y-0.06rem">{{ item.label }}</span>
+                    </slot>
+                </template>
             </div>
             <!-- 向右箭头 -->
             <svg
@@ -24,7 +33,7 @@
                 viewBox="0 0 1024 1024"
             ><path d="M988 548c-19.9 0-36-16.1-36-36 0-59.4-11.6-117-34.6-171.3a440.45 440.45 0 00-94.3-139.9 437.71 437.71 0 00-139.9-94.3C629 83.6 571.4 72 512 72c-19.9 0-36-16.1-36-36s16.1-36 36-36c69.1 0 136.2 13.5 199.3 40.3C772.3 66 827 103 874 150c47 47 83.9 101.8 109.7 162.7 26.7 63.1 40.2 130.2 40.2 199.3.1 19.9-16 36-35.9 36z"/></svg>
         </div>
-        <div v-show="!props.parentRecord?.isfinished && !props.isFinished" ref="endLineRef" class="end-line flex flex-center">
+        <div v-show="!props.parentRecord?.isfinished && !props.isFinished && props.lazy" ref="endLineRef" class="end-line flex flex-center">
             <span class="text-#333">加载中</span>
             <svg
                 class="nav-loading w-0.75rem h-0.75rem flex-shrink-0 ml-0.5rem"
@@ -40,7 +49,9 @@
         v-model:tree-data="nextTreeData"
         :lazy="props.lazy"
         :index="props.index+1"
-        :parent-record="props.treeData.find((item:Record<string, any>) => item.value === select[0])"
+        :multiple="props.multiple"
+        :parent-record="props.treeData.find((item:Record<string, any>) => item.value === (select[0] || multipleSelect))"
+        :parentSelect="select"
         @change="nextSelectChange"
     >
         <template #label="{data}: any">
@@ -58,11 +69,14 @@ const props = withDefaults(defineProps<{
     index?: number;
     lazy?: boolean;
     isFinished?: boolean;
-    parentRecord?: Record<string, any>
+    parentRecord?: Record<string, any>;
+    parentSelect?: (string | number)[];
+    multiple: boolean;
 }>(), {
     index: 0,
     lazy: false,
     isFinished: false,
+    multiple: false,
 });
 
 const emit = defineEmits(['change', 'update:tree-data']);
@@ -87,12 +101,8 @@ const nextNavRef = ref();
 
 // =================== 选中项 ====================
 const select = ref<(string | number)[]>([]);
-function clickSelectItem(record: Record<string, any>) {
-    if(select.value[0] === record.value) return;
-    nextTreeData.value = [];
-    select.value[0] = record.value;
-    // 清空下级选中项
-    nextNavRef.value?.clearSelect();
+const multipleSelect = ref<(string | number)>();
+function loadNextData(record: Record<string, any>) {
     // 动态请求数据，只有非叶子节点才请求数据，且只请求一次
     if(loadData) {
         if(record.isLeaf) {
@@ -106,23 +116,68 @@ function clickSelectItem(record: Record<string, any>) {
     }else{
         nextTreeData.value = record.children || [];
     }
-    emit('change', record, props.index, !nextTreeData.value?.length && !!record?.isLeaf);
 }
+// 当父级选中项改变时，改变当前选中项
+
+if(props.parentSelect) {
+    watch(()=>props.parentSelect?.length, ()=>{
+        // 如果父级选中项包含父级选中展开项，则选中全部
+        if(props.parentSelect?.includes(props.parentRecord!.value)) {
+            select.value = props.treeData.map((item: Record<string, any>) => item.value);
+        }
+    }, { immediate: true });
+}
+// 多选
+function changeMultiple(e: any, record: Record<string, any>) {
+    const checked: boolean = e.target.checked;
+    if(checked) {
+        select.value.push(record.value);
+        nextNavRef.value?.updateSelect([], 'selectAll');
+    }else{
+        select.value = select.value.filter((item) => item !== record.value);
+        nextNavRef.value?.updateSelect([], 'noSelect');
+    }
+    emit('change', select.value, props.index, !nextTreeData.value?.length && record.children?.length === 0);
+}
+// 点击某一项
+function clickSelectItem(record: Record<string, any>) {
+    if(props.multiple) {
+        if(multipleSelect.value === record.value) return;
+        multipleSelect.value = record.value;
+    }else{
+        if(select.value[0] === record.value) return;
+        select.value[0] = record.value;
+    }
+    // 清空下级选中项
+    nextNavRef.value?.clearSelect();
+    loadNextData(record);
+    emit('change', select.value, props.index, !nextTreeData.value?.length && !!record?.isLeaf);
+}
+// 清空选项
 function clearSelect() {
-    select.value[0] = '';
+    if(!props.multiple) {
+        select.value = [];
+    }
+    multipleSelect.value = undefined;
     // 清空下级选中项
     nextNavRef.value?.clearSelect();
     nextTreeData.value = [];
 }
 // 更新选中项,用于设置默认值
-function updateSelect(value: (string | number)[]) {
-    const label = value[props.index];
-    if(label !== select.value[0]) {
-        select.value[0] = label || '';
-        nextTreeData.value = props.treeData.find((item : Record<string, any>) => item.value === label)?.children || [];
+function updateSelect(value: (string | number)[], selectType?: 'selectAll' | 'noSelect') {
+    if(selectType === 'selectAll') {
+        select.value = props.treeData.map((item: Record<string, any>) => item.value);
+    }else if(selectType === 'noSelect') {
+        select.value = [];
+    }else{
+        const label = value[props.index];
+        if(label !== select.value[0]) {
+            select.value[0] = label || '';
+            nextTreeData.value = props.treeData.find((item : Record<string, any>) => item.value === label)?.children || [];
+        }
     }
     nextTick(()=>{
-        nextNavRef.value?.updateSelect(value);
+        nextNavRef.value?.updateSelect(value, selectType);
     });
 }
 function nextSelectChange(record:Record<string, any>, index:number, isEnd:boolean) {
@@ -134,7 +189,7 @@ function updateNextOptions(record: Record<string, any>) {
     loadingMap.value[record.value] = true;
     unwatchMap[record.value] = watch(()=>record.children?.length, (length: number)=>{
         // 两次加载同时触发，保证先后顺序
-        if(length && record.value === select.value[0]) {
+        if(length && record.value === getSelectValue()) {
             nextTreeData.value = record.children || [];
         }
         loadingMap.value[record.value] = false;
@@ -201,12 +256,30 @@ function getLoadPageNum(value: string) {
 }
 
 // =================== 初始化 ====================
-watch(()=>props.parentRecord?.value, (treeData)=>{
+watch(()=>props.parentRecord?.value, ()=>{
     // 滚动到顶部
     nextTick(()=>{
         menuRef.value?.scrollTo(0, 0);
     });
 });
+
+// =================== 样式 ====================
+function isHeighLight(record: Record<string, any>) {
+    if(props.multiple) {
+        return multipleSelect.value === record.value;
+    }else{
+        return select.value[0] === record.value;
+    }
+}
+
+// =================== 工具函数 ====================
+function getSelectValue() {
+    if(props.multiple) {
+        return multipleSelect.value;
+    }else{
+        return select.value[0];
+    }
+}
 
 defineExpose({
     clearSelect,
@@ -228,10 +301,19 @@ defineExpose({
     .nav-loading{
         animation: rotate 1s linear infinite;
     }
-    .nav-label > *{
+    :deep(.ant-checkbox-wrapper) > .ant-checkbox + span,
+    .nav-checkbox-contaner,
+    .nav-label > * {
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
     }
+    :deep(.ant-checkbox-wrapper) > .ant-checkbox + span{
+        padding: 0;
+    }
+    .nav-checkbox-contaner{
+        display: block;
+    }
+
 }
 </style>

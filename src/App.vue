@@ -16,8 +16,7 @@ window.onbeforeunload = function () {
     localStorage.setItem('selectedKeys', JSON.stringify(selectedKeys.value));
     localStorage.setItem('openKeys', JSON.stringify(openKeys.value));
 };
-
-window.onload = function () {
+onMounted(()=>{
     const keys = localStorage.getItem('selectedKeys');
     openKeys.value = JSON.parse(localStorage.getItem('openKeys') || '[]');
     if (keys) {
@@ -36,7 +35,7 @@ window.onload = function () {
         };
         dfs(tabs, selectedKeys.value[0]);
     }
-};
+});
 
 function titleClick(tabList: Record<string, any>, key:string) {
     selectCom.value = tabList.find((item: any) => item.name === key)?.component;

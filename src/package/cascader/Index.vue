@@ -17,6 +17,7 @@
                 :tree-data="options"
                 :lazy="props.lazy"
                 :is-finished="props.isFinished"
+                :multiple="props.multiple"
                 @change="change"
             >
                 <template #label="{data}: any">
@@ -39,12 +40,14 @@ const props = withDefaults(defineProps<{
     loadData?: (label: Record<string, any> | undefined, pageNum:number) => void;
     lazy?: boolean;
     isFinished?: boolean;
+    multiple?: boolean;
 }>(), {
     value: ()=>[],
     changeOnSelect: false,
     options: ()=>[],
     lazy: false,
     isFinished: false,
+    multiple: false,
 });
 const emit = defineEmits(['update:value', 'change']);
 provide('loadData', props.loadData);
@@ -53,7 +56,7 @@ const init = ref(false);
 const nextNavRef = ref();
 
 // =================== 选中项 ====================
-const selectValue = ref<(string | number)[]>([]);
+const selectValue = ref<(string | number | ((string | number)[]))[]>([]);
 if(props.value?.length) {
     selectValue.value = JSON.parse(JSON.stringify(props.value));
 }
@@ -70,12 +73,19 @@ function emitChange() {
 }
 
 // =================== 选中项改变 ====================
-function change(record:Record<string, any>, index:number, isEnd:boolean) {
-    selectValue.value.splice(index, selectValue.value.length, record.value as string);
-    if(isEnd || props.changeOnSelect) {
-        isEnd && (open.value = false);
-        emitChange();
+function change(record:Record<string, any>[], index:number, isEnd:boolean) {
+    console.log(record, index, isEnd);
+    if(props.multiple) {
+        const i = selectValue.value[index];
+        // selectValue.value.splice(index, 1, [...i, record.value]);
+    }else{
+        // 单选需要清楚后面的选项
+        selectValue.value.splice(index, selectValue.value.length, record[0].value as string);
     }
+    // if(isEnd || props.changeOnSelect) {
+    //     isEnd && (open.value = false);
+    //     emitChange();
+    // }
 }
 
 // =================== 控制下拉菜单的显示和隐藏 ====================

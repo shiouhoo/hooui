@@ -6,8 +6,44 @@ import { message } from 'ant-design-vue';
 const value = ref<string[]>([]);
 
 const options = ref<Record<string, any>[]>([]);
+options.value = [
+    {
+        value: 'zhejiang',
+        label: 'Zhejiang',
+        children: [
+            {
+                value: 'hangzhou',
+                label: 'Hangzhou',
+                children: [
+                    {
+                        value: 'xihu',
+                        label: 'West Lake',
+                    },
+                ],
+            },
+        ],
+    },
+    {
+        value: 'jiangsu',
+        label: 'Jiangsu',
+        children: [
+            {
+                value: 'nanjing',
+                label: 'Nanjing',
+                children: [
+                    {
+                        value: 'zhonghuamen',
+                        label: 'Zhong Hua Men',
+                    },
+                ],
+            },
+        ],
+    },
+];
+
 const isFinished = ref(false);
 function loadData(data: Record<string, any> | undefined, pageNum:number) {
+    console.log(data, pageNum);
     setTimeout(() => {
         if(data) {
             !data.children && (data.children = []);
@@ -24,7 +60,7 @@ function loadData(data: Record<string, any> | undefined, pageNum:number) {
             for(let i = pageNum * 10;i < pageNum * 10 + 10;i++) {
                 options.value.push({
                     value: 'zhejiang' + i,
-                    label: 'Zhejiang' + i,
+                    label: 'Zhejiangfdsaaaaaaaaaa' + i,
                     isLeaf: false,
                 });
             }
@@ -47,9 +83,7 @@ function loadData(data: Record<string, any> | undefined, pageNum:number) {
                     class="m-10px"
                     v-model:value="value"
                     :options="options"
-                    :load-data="loadData"
-                    change-on-select
-                    lazy
+                    multiple
                     :is-finished="isFinished"
                 >
                     <!-- <template #label="{data}">
