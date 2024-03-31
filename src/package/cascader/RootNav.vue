@@ -2,7 +2,13 @@
     <div ref="menuRef" class="nav-menu flex flex-col w-10rem overflow-auto py-5px">
         <div v-for="(item,index) in treeData" :key="index" class="nav-item h-2rem flex items-center justify-between px-0.35rem flex-shrink-0 cursor-pointer hover:bg-#f5f5f5" :class="{'bg-#e6f7ff!': isHeighLight(item) }" @click="clickSelectItem(item)">
             <div class="nav-label flex flex-center cursor-pointer pl-0.5rem overflow-hidden">
-                <a-checkbox :checked="select.includes(item.value)" v-if="props.multiple" @change="(e:any)=>changeMultiple(e,item)">
+                <a-checkbox
+                    :checked="select.includes(item.value)"
+                    :indeterminate="halfChecked.includes(item.value)"
+                    v-if="props.multiple"
+                    @change="(e:any)=>changeMultiple(e,item)"
+                    @click.stop
+                >
                     <span @click="(e)=>(!item.isLeaf && item.children?.length > 0) && e.preventDefault()" class="nav-checkbox-contaner px-8px">
                         <slot name="label" :data="item">
                             <span class="nav-text -translate-y-0.06rem">{{ item.label }}</span>
@@ -50,7 +56,7 @@
         :lazy="props.lazy"
         :index="props.index+1"
         :multiple="props.multiple"
-        :parent-record="props.treeData.find((item:Record<string, any>) => item.value === (select[0] || multipleSelect))"
+        :parent-record="props.treeData.find((item:Record<string, any>) => item.value === getSelectValue())"
         :parentSelect="select"
         @change="nextSelectChange"
     >
@@ -99,6 +105,9 @@ const existNext = computed(() => {
 });
 const nextNavRef = ref();
 
+// =================== 半选 ====================
+const halfChecked = ref<(string | number)[]>([]);
+
 // =================== 选中项 ====================
 const select = ref<(string | number)[]>([]);
 const multipleSelect = ref<(string | number)>();
@@ -117,10 +126,10 @@ function loadNextData(record: Record<string, any>) {
         nextTreeData.value = record.children || [];
     }
 }
-// 当父级选中项改变时，改变当前选中项
 
+// 当父级选中项改变时，改变当前选中项
 if(props.parentSelect) {
-    watch(()=>props.parentSelect?.length, ()=>{
+    watch([()=>props.parentSelect?.length, ()=>props.parentRecord?.value], ()=>{
         // 如果父级选中项包含父级选中展开项，则选中全部
         if(props.parentSelect?.includes(props.parentRecord!.value)) {
             select.value = props.treeData.map((item: Record<string, any>) => item.value);
@@ -151,6 +160,7 @@ function clickSelectItem(record: Record<string, any>) {
     // 清空下级选中项
     nextNavRef.value?.clearSelect();
     loadNextData(record);
+    console.log(nextTreeData.value);
     emit('change', select.value, props.index, !nextTreeData.value?.length && !!record?.isLeaf);
 }
 // 清空选项
