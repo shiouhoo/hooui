@@ -21,6 +21,26 @@ options.value = [
                     },
                 ],
             },
+            {
+                value: 'ningbo',
+                label: 'Ningbo',
+                children: [
+                    {
+                        value: 'dongqianlake',
+                        label: 'Dongqian Lake',
+                    },
+                ],
+            },
+            {
+                value: 'wenzhou',
+                label: 'Wenzhou',
+                children: [
+                    {
+                        value: 'jiangxinpark',
+                        label: 'Jiangxin Park',
+                    },
+                ],
+            }
         ],
     },
     {
@@ -83,7 +103,6 @@ function loadData(data: Record<string, any> | undefined, pageNum:number) {
                     class="m-10px"
                     v-model:value="value"
                     :options="options"
-                    multiple
                     :is-finished="isFinished"
                 >
                     <!-- <template #label="{data}">

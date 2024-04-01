@@ -2,24 +2,9 @@
     <div ref="menuRef" class="nav-menu flex flex-col w-10rem overflow-auto py-5px">
         <div v-for="(item,index) in treeData" :key="index" class="nav-item h-2rem flex items-center justify-between px-0.35rem flex-shrink-0 cursor-pointer hover:bg-#f5f5f5" :class="{'bg-#e6f7ff!': isHeighLight(item) }" @click="clickSelectItem(item)">
             <div class="nav-label flex flex-center cursor-pointer pl-0.5rem overflow-hidden">
-                <a-checkbox
-                    :checked="select.includes(item.value)"
-                    :indeterminate="halfChecked.includes(item.value)"
-                    v-if="props.multiple"
-                    @change="(e:any)=>changeMultiple(e,item)"
-                    @click.stop
-                >
-                    <span @click="(e)=>(!item.isLeaf && item.children?.length > 0) && e.preventDefault()" class="nav-checkbox-contaner px-8px">
-                        <slot name="label" :data="item">
-                            <span class="nav-text -translate-y-0.06rem">{{ item.label }}</span>
-                        </slot>
-                    </span>
-                </a-checkbox>
-                <template v-else>
-                    <slot name="label" :data="item">
-                        <span class="nav-text -translate-y-0.06rem">{{ item.label }}</span>
-                    </slot>
-                </template>
+                <slot name="label" :data="item">
+                    <span class="nav-text -translate-y-0.06rem">{{ item.label }}</span>
+                </slot>
             </div>
             <!-- 向右箭头 -->
             <svg
@@ -55,9 +40,7 @@
         v-model:tree-data="nextTreeData"
         :lazy="props.lazy"
         :index="props.index+1"
-        :multiple="props.multiple"
-        :parent-record="props.treeData.find((item:Record<string, any>) => item.value === getSelectValue())"
-        :parentSelect="select"
+        :parent-record="props.treeData.find((item:Record<string, any>) => item.value === select)"
         @change="nextSelectChange"
     >
         <template #label="{data}: any">
@@ -76,8 +59,7 @@ const props = withDefaults(defineProps<{
     lazy?: boolean;
     isFinished?: boolean;
     parentRecord?: Record<string, any>;
-    parentSelect?: (string | number)[];
-    multiple: boolean;
+    changeParent?: (record: Record<string, any>, type: 'ckecked' | 'no-chekced'| 'half-checked')=>void;
 }>(), {
     index: 0,
     lazy: false,
@@ -97,6 +79,9 @@ const loadNextDataMap:Record<string, any> = {};
 const loadingMap = ref<Record<string, any>>({});
 // 根据父id保存当前加载的页数
 const loadLazyDataMap:Record<string, any> = {};
+const parentRecordValue = computed(()=>{
+    return props.parentRecord?.value || '__top';
+});
 
 // =================== 下级数据 ====================
 const nextTreeData = ref<Record<string, any>[]>([]);
@@ -105,12 +90,19 @@ const existNext = computed(() => {
 });
 const nextNavRef = ref();
 
-// =================== 半选 ====================
-const halfChecked = ref<(string | number)[]>([]);
-
-// =================== 选中项 ====================
-const select = ref<(string | number)[]>([]);
-const multipleSelect = ref<(string | number)>();
+// =================== 单选选中项 ====================
+// 保存不同的父级对应的选中项
+const select = ref<string | number>();
+// 点击某一项
+function clickSelectItem(record: Record<string, any>) {
+    if(select.value === record.value) return;
+    select.value = record.value;
+    // 清空下级选中项
+    nextNavRef.value?.clearSelect();
+    loadNextData(record);
+    emit('change', [select.value], !nextTreeData.value?.length && !record?.isLeaf);
+}
+// 加载下级数据
 function loadNextData(record: Record<string, any>) {
     // 动态请求数据，只有非叶子节点才请求数据，且只请求一次
     if(loadData) {
@@ -126,72 +118,25 @@ function loadNextData(record: Record<string, any>) {
         nextTreeData.value = record.children || [];
     }
 }
-
-// 当父级选中项改变时，改变当前选中项
-if(props.parentSelect) {
-    watch([()=>props.parentSelect?.length, ()=>props.parentRecord?.value], ()=>{
-        // 如果父级选中项包含父级选中展开项，则选中全部
-        if(props.parentSelect?.includes(props.parentRecord!.value)) {
-            select.value = props.treeData.map((item: Record<string, any>) => item.value);
-        }
-    }, { immediate: true });
-}
-// 多选
-function changeMultiple(e: any, record: Record<string, any>) {
-    const checked: boolean = e.target.checked;
-    if(checked) {
-        select.value.push(record.value);
-        nextNavRef.value?.updateSelect([], 'selectAll');
-    }else{
-        select.value = select.value.filter((item) => item !== record.value);
-        nextNavRef.value?.updateSelect([], 'noSelect');
-    }
-    emit('change', select.value, props.index, !nextTreeData.value?.length && record.children?.length === 0);
-}
-// 点击某一项
-function clickSelectItem(record: Record<string, any>) {
-    if(props.multiple) {
-        if(multipleSelect.value === record.value) return;
-        multipleSelect.value = record.value;
-    }else{
-        if(select.value[0] === record.value) return;
-        select.value[0] = record.value;
-    }
-    // 清空下级选中项
-    nextNavRef.value?.clearSelect();
-    loadNextData(record);
-    console.log(nextTreeData.value);
-    emit('change', select.value, props.index, !nextTreeData.value?.length && !!record?.isLeaf);
-}
 // 清空选项
 function clearSelect() {
-    if(!props.multiple) {
-        select.value = [];
-    }
-    multipleSelect.value = undefined;
     // 清空下级选中项
     nextNavRef.value?.clearSelect();
     nextTreeData.value = [];
 }
 // 更新选中项,用于设置默认值
-function updateSelect(value: (string | number)[], selectType?: 'selectAll' | 'noSelect') {
-    if(selectType === 'selectAll') {
-        select.value = props.treeData.map((item: Record<string, any>) => item.value);
-    }else if(selectType === 'noSelect') {
-        select.value = [];
-    }else{
-        const label = value[props.index];
-        if(label !== select.value[0]) {
-            select.value[0] = label || '';
-            nextTreeData.value = props.treeData.find((item : Record<string, any>) => item.value === label)?.children || [];
-        }
+function updateSelect(value: (string | number)[]) {
+    const label = value[props.index];
+    if(label !== select.value) {
+        select.value = label || '';
+        nextTreeData.value = props.treeData.find((item : Record<string, any>) => item.value === label)?.children || [];
     }
     nextTick(()=>{
-        nextNavRef.value?.updateSelect(value, selectType);
+        nextNavRef.value?.updateSelect(value);
     });
 }
-function nextSelectChange(record:Record<string, any>, index:number, isEnd:boolean) {
-    emit('change', record, index, isEnd);
+function nextSelectChange(record: (string | number)[], isEnd:boolean) {
+    emit('change', [select.value, ...record], isEnd);
 }
 // 更新下级options，动态加载数据
 let unwatchMap:Record<string, any> = {};
@@ -199,7 +144,7 @@ function updateNextOptions(record: Record<string, any>) {
     loadingMap.value[record.value] = true;
     unwatchMap[record.value] = watch(()=>record.children?.length, (length: number)=>{
         // 两次加载同时触发，保证先后顺序
-        if(length && record.value === getSelectValue()) {
+        if(length && record.value === select.value) {
             nextTreeData.value = record.children || [];
         }
         loadingMap.value[record.value] = false;
@@ -222,7 +167,7 @@ if(props.lazy) {
             const isfinish = props.parentRecord?.isfinished;
             if(entries[0].isIntersecting && !isfinish && !props.isFinished) {
                 if(loadData) {
-                    const pageNum = getLoadPageNum(props.parentRecord?.value || '__top');
+                    const pageNum = getLoadPageNum(parentRecordValue.value);
                     updateOptions();
                     loadData(props.parentRecord, pageNum);
                 }
@@ -275,20 +220,7 @@ watch(()=>props.parentRecord?.value, ()=>{
 
 // =================== 样式 ====================
 function isHeighLight(record: Record<string, any>) {
-    if(props.multiple) {
-        return multipleSelect.value === record.value;
-    }else{
-        return select.value[0] === record.value;
-    }
-}
-
-// =================== 工具函数 ====================
-function getSelectValue() {
-    if(props.multiple) {
-        return multipleSelect.value;
-    }else{
-        return select.value[0];
-    }
+    return select.value === record.value;
 }
 
 defineExpose({

@@ -17,7 +17,6 @@
                 :tree-data="options"
                 :lazy="props.lazy"
                 :is-finished="props.isFinished"
-                :multiple="props.multiple"
                 @change="change"
             >
                 <template #label="{data}: any">
@@ -73,19 +72,12 @@ function emitChange() {
 }
 
 // =================== 选中项改变 ====================
-function change(record:Record<string, any>[], index:number, isEnd:boolean) {
-    console.log(record, index, isEnd);
-    if(props.multiple) {
-        const i = selectValue.value[index];
-        // selectValue.value.splice(index, 1, [...i, record.value]);
-    }else{
-        // 单选需要清楚后面的选项
-        selectValue.value.splice(index, selectValue.value.length, record[0].value as string);
+function change(record: (string | number)[], isEnd:boolean) {
+    selectValue.value = record;
+    if(isEnd || props.changeOnSelect) {
+        isEnd && (open.value = false);
+        emitChange();
     }
-    // if(isEnd || props.changeOnSelect) {
-    //     isEnd && (open.value = false);
-    //     emitChange();
-    // }
 }
 
 // =================== 控制下拉菜单的显示和隐藏 ====================
