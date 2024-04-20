@@ -44,15 +44,15 @@ jobs:
         with:
           folder: docs/.vitepress/dist
 
-      - name: Install Serverless CLI
-        run: npm install -g @serverless-devs/s
-      - name: Serverless Config
-        run: s config add --AccessKeyID ${{secrets.ACCESS_KEY_ID}} --AccessKeySecret ${{secrets.ACCESS_KEY_SECRET}} -a default -f
-      - name: Prepare deployment directory
-        run: |
-          mkdir deploy
-          cp -r docs/.vitepress/dist deploy/hooui
-          cp -r .serverless/* deploy
-          mv deploy/hooui/index.html deploy/index.html
-      - name: Deploy to Aliyun Serverless
-        run: s deploy -y --use-local -t .serverless/s.yaml
+      # - name: Install Serverless CLI
+      #   run: npm install -g @serverless-devs/s
+      # - name: Serverless Config
+      #   run: s config add --AccessKeyID ${{secrets.ACCESS_KEY_ID}} --AccessKeySecret ${{secrets.ACCESS_KEY_SECRET}} -a default -f
+      # - name: Prepare deployment directory
+      #   run: |
+      #     mkdir deploy
+      #     cp -r docs/.vitepress/dist deploy/hooui
+      #     cp -r .serverless/* deploy
+      #     mv deploy/hooui/index.html deploy/index.html
+      # - name: Deploy to Aliyun Serverless
+      #   run: s deploy -y --use-local -t .serverless/s.yaml

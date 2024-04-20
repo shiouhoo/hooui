@@ -1,21 +1,21 @@
 <template>
-    <div ref="menuRef" class="nav-menu">
+    <div ref="menuRef" class="nav-menu flex flex-col w-10rem overflow-auto py-5px">
         <div
             v-for="(item,index) in treeData"
             :key="index"
-            class="nav-item"
-            :style="{backgroundColor: isHeighLight(item) ?'#e6f7ff':''}"
+            class="nav-item h-2rem flex items-center justify-between px-0.35rem flex-shrink-0 cursor-pointer hover:bg-#f5f5f5"
+            :class="{'bg-#e6f7ff!': isHeighLight(item) }"
             @click="clickSelectItem(item)"
         >
-            <div class="nav-label">
+            <div class="nav-label flex flex-center cursor-pointer pl-0.5rem overflow-hidden">
                 <slot name="label" :data="item">
-                    <span class="nav-text">{{ item.label }}</span>
+                    <span class="nav-text -translate-y-0.06rem">{{ item.label }}</span>
                 </slot>
             </div>
             <!-- 向右箭头 -->
             <svg
                 v-show="!loadingMap[item.value] && ((item.children?.length > 0) || (loadData && !item.isLeaf))"
-                class="arrow-right"
+                class="w-0.75rem h-0.75rem flex-shrink-0 ml-0.5rem"
                 focusable="false"
                 data-icon="right"
                 aria-hidden="true"
@@ -24,7 +24,7 @@
             <!-- 加载图标 -->
             <svg
                 v-show="loadingMap[item.value]"
-                class="nav-loading"
+                class="nav-loading w-0.75rem h-0.75rem flex-shrink-0 ml-0.5rem"
                 focusable="false"
                 aria-hidden="true"
                 viewBox="0 0 1024 1024"
@@ -33,7 +33,7 @@
         <div v-show="!props.parentRecord?.isfinished && !props.isFinished && props.lazy" ref="endLineRef" class="end-line flex flex-center">
             <span class="text-#333">加载中</span>
             <svg
-                class="nav-loading"
+                class="nav-loading w-0.75rem h-0.75rem flex-shrink-0 ml-0.5rem"
                 focusable="false"
                 aria-hidden="true"
                 viewBox="0 0 1024 1024"
@@ -247,49 +247,12 @@ defineExpose({
     }
 }
 .nav-menu{
-    display: flex;
-    flex-direction: column;
-    width: 10rem;
     border-right: 1px solid #f0f0f0;
-    padding: 5px 0;
-    overflow: auto;
     .nav-item{
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        flex-shrink: 0;
-        height: 2rem;
-        padding: 0 0.35rem;
-        cursor: pointer;
         transition: all 0.3s;
-        &:hover{
-            background-color: #f5f5f5;
-
-        }
-    }
-    .arrow-right{
-        flex-shrink: 0;
-        width: 0.75rem;
-        height: 0.75rem;
-        margin-left: 0.75rem;
     }
     .nav-loading{
-        flex-shrink: 0;
-        width: 0.75rem;
-        height: 0.75rem;
-        margin-left: 0.75rem;
         animation: rotate 1s linear infinite;
-    }
-    .nav-label{
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding-left: 0.5rem;
-        cursor: pointer;
-        overflow: hidden;
-        .nav-text{
-            transform: translateY(-0.06rem);
-        }
     }
     .nav-label > :deep(*) ,
     .nav-label > * {

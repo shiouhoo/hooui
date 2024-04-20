@@ -27,7 +27,7 @@ export default defineConfig({
         // https://vitepress.dev/reference/default-theme-config
         nav: [
             { text: 'directive', link: '/directive/', activeMatch: '/directive' },
-            { text: 'components', link: '/package/expandcontainer', activeMatch: '/package' },
+            { text: 'components', link: '/package/cascader-radio', activeMatch: '/package' },
             { text: '工具函数', link: '/utils/download', activeMatch: '/utils' },
             { text: 'hooks', link: '/hooks/useFullScreen', activeMatch: '/hooks' }
         ],
@@ -47,6 +47,7 @@ export default defineConfig({
                 {
                     text: '输入组件',
                     items: [
+                        { text: 'cascader-radio', link: '/package/cascader-radio' },
                         { text: 'expandcontainer', link: '/package/expandcontainer' },
                         { text: 'searchscopeinput', link: '/package/searchscopeinput' },
                     ]

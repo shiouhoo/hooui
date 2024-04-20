@@ -3,7 +3,7 @@
         <template  v-if="show" #sidebar-nav-before>
             <div class="wrapper">
                 <span>是否使用 unocss：</span>
-                <a-switch :checked="preferUnocss" @change="toggleUnocssAPI" />
+                <a-switch :checked="preferUnocss" @change="toggleUnocssAPI" ></a-switch>
             </div>
         </template>
         <template  #nav-bar-title-after>
