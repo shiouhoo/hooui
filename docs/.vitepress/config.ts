@@ -30,9 +30,10 @@ export default defineConfig({
         // https://vitepress.dev/reference/default-theme-config
         nav: [
             { text: 'directive', link: '/directive/', activeMatch: '/directive' },
-            { text: 'components', link: '/package/expandcontainer', activeMatch: '/package' },
+            { text: 'components', link: '/package/', activeMatch: '/package' },
             { text: '工具函数', link: '/utils/download', activeMatch: '/utils' },
-            { text: 'hooks', link: '/hooks/useFullScreen', activeMatch: '/hooks' }
+            { text: 'hooks', link: '/hooks/useFullScreen', activeMatch: '/hooks' },
+            { text: 'other', link: '/other/unocssConfig', activeMatch: '/other' }
         ],
 
         sidebar: {
@@ -40,7 +41,6 @@ export default defineConfig({
                 {
                     text: '自定义指令',
                     items: [
-                        { text: 'index', link: '/directive/' },
                         { text: 'loading', link: '/directive/loading' },
                         { text: 'copy', link: '/directive/copy' },
                     ]
@@ -50,6 +50,7 @@ export default defineConfig({
                 {
                     text: '输入组件',
                     items: [
+                        { text: 'cascader-radio', link: '/package/cascader-radio' },
                         { text: 'expandcontainer', link: '/package/expandcontainer' },
                         { text: 'searchscopeinput', link: '/package/searchscopeinput' },
                     ]
@@ -75,6 +76,14 @@ export default defineConfig({
                     items: [
                         { text: 'useFullScreen', link: '/hooks/useFullScreen' },
                         { text: 'useTabScroll', link: '/hooks/useTabScroll' },
+                    ]
+                }
+            ],
+            other: [
+                {
+                    text: 'other',
+                    items: [
+                        { text: 'unocss配置', link: '/other/unocssConfig' },
                     ]
                 }
             ]
