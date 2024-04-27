@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { ref, watch, isRef, nextTick, type Ref } from 'vue';
 
 function getDom(target: Ref<HTMLElement>| string | HTMLElement): HTMLElement {

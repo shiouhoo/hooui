@@ -7,7 +7,7 @@ module.exports = {
         es2021: true,
         node: true,
     },
-    ignorePatterns: ['!.vitepress', 'cache', 'useComponents.js'],
+    ignorePatterns: ['!.vitepress', 'cache', 'dist', 'useComponents.js'],
     extends: [
         'plugin:vue/vue3-essential',
         'eslint:recommended',

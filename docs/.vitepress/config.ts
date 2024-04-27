@@ -50,15 +50,21 @@ export default defineConfig({
                 {
                     text: '输入组件',
                     items: [
-                        { text: 'cascader-radio', link: '/package/cascader-radio' },
-                        { text: 'expandcontainer', link: '/package/expandcontainer' },
-                        { text: 'searchscopeinput', link: '/package/searchscopeinput' },
+                        { text: 'CascaderRadio 单选级联选择器', link: '/package/cascader-radio' },
+                        { text: 'ExpandContainer 展开收起容器', link: '/package/expandcontainer' },
+                        { text: 'SearchScopeInput 下拉输入搜索框', link: '/package/searchscopeinput' },
+                    ]
+                },
+                {
+                    text: '展示组件',
+                    items: [
+                        { text: 'ScopeList 局部滚动列表', link: '/package/scope-list' },
                     ]
                 },
                 {
                     text: '弹窗',
                     items: [
-                        { text: 'bottompopup', link: '/package/bottompopup' },
+                        { text: 'BottomPopup 底部弹窗', link: '/package/bottompopup' },
                     ]
                 }
             ],

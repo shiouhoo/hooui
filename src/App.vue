@@ -7,6 +7,7 @@ import DemoBottomPopup from './demo/DemoBottomPopup.vue';
 import DemoTabScroll from './demo/DemoTabScroll.vue';
 import DemoFullScreen from './demo/DemoFullScreen.vue';
 import DemoCascader from './demo/DemoCascader.vue';
+import DemoScopeList from './demo/DemoScopeList.vue';
 
 const selectedKeys = ref<string[]>(['Copy']);
 const openKeys = ref<string[]>([]);
@@ -76,17 +77,21 @@ const tabs: Record<string, any>[] = [
                 component: DemoBottomPopup
             },
             {
+                name: 'Cascader',
+                component: DemoCascader
+            },
+            {
                 name: 'ExpandContainer',
                 component: DemoExpandContainer
+            },
+            {
+                name: 'ScopeList',
+                component: DemoScopeList
             },
             {
                 name: 'SearchScopeInput',
                 component: DemoSearchScopeInput
             },
-            {
-                name: 'Cascader',
-                component: DemoCascader
-            }
         ]
     }
 ];

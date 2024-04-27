@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { isRef, onMounted, onUnmounted, ref, watch, nextTick, type Ref } from 'vue';
 
 type TabValue = HTMLElement | Ref<HTMLElement> | string;
