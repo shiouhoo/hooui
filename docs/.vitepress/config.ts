@@ -90,6 +90,7 @@ export default defineConfig({
                     text: 'other',
                     items: [
                         { text: 'unocss配置', link: '/other/unocssConfig' },
+                        { text: 'nginx配置', link: '/other/nginxConfig' },
                     ]
                 }
             ]
