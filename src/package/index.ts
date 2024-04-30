@@ -1,7 +1,7 @@
 import ExpandContainer from './expandcontainer/Index.vue';
 import SearchScopeInput from './searchscopeinput/Index.vue';
 import BottomPopup from './popup/BottomPopup.vue';
-import CascaderRadio from './cascader/Index.vue';
+import CascaderRadio from './cascader/radio/RadioCascader.vue';
 import ScopeList from './scope-list/Index.vue';
 
 export function installComponents(app: any) {

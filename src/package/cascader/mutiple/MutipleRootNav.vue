@@ -1,21 +1,22 @@
 <template>
-    <div ref="menuRef" class="nav-menu flex flex-col w-10rem overflow-auto py-5px">
+    <div ref="menuRef" class="nav-menu">
         <div
             v-for="(item,index) in treeData"
             :key="index"
-            class="nav-item h-2rem flex items-center justify-between px-0.35rem flex-shrink-0 cursor-pointer hover:bg-#f5f5f5"
-            :class="{'bg-#e6f7ff!': isHeighLight(item) }"
+            class="nav-item"
+            :style="{backgroundColor: isHeighLight(item) ?'#e6f7ff':''}"
             @click="clickSelectItem(item)"
         >
-            <div class="nav-label flex flex-center cursor-pointer pl-0.5rem overflow-hidden">
+            <div class="nav-label">
                 <slot name="label" :data="item">
-                    <span class="nav-text -translate-y-0.06rem">{{ item.label }}</span>
+                    <span class="nav-checkbox" :class="{checked : select.includes(item.value)}" @click.stop="toogleSelect(item)" ></span>
+                    <span class="nav-text">{{ item.label }}</span>
                 </slot>
             </div>
             <!-- 向右箭头 -->
             <svg
                 v-show="!loadingMap[item.value] && ((item.children?.length > 0) || (loadData && !item.isLeaf))"
-                class="w-0.75rem h-0.75rem flex-shrink-0 ml-0.5rem"
+                class="arrow-right"
                 focusable="false"
                 data-icon="right"
                 aria-hidden="true"
@@ -24,7 +25,7 @@
             <!-- 加载图标 -->
             <svg
                 v-show="loadingMap[item.value]"
-                class="nav-loading w-0.75rem h-0.75rem flex-shrink-0 ml-0.5rem"
+                class="nav-loading"
                 focusable="false"
                 aria-hidden="true"
                 viewBox="0 0 1024 1024"
@@ -33,7 +34,7 @@
         <div v-show="!props.parentRecord?.isfinished && !props.isFinished && props.lazy" ref="endLineRef" class="end-line flex flex-center">
             <span class="text-#333">加载中</span>
             <svg
-                class="nav-loading w-0.75rem h-0.75rem flex-shrink-0 ml-0.5rem"
+                class="nav-loading"
                 focusable="false"
                 aria-hidden="true"
                 viewBox="0 0 1024 1024"
@@ -46,7 +47,7 @@
         v-model:tree-data="nextTreeData"
         :lazy="props.lazy"
         :index="props.index+1"
-        :parent-record="props.treeData.find((item:Record<string, any>) => item.value === select)"
+        :parent-record="props.treeData.find((item:Record<string, any>) => item.value === expand)"
         @change="nextSelectChange"
     >
         <template #label="{data}: any">
@@ -57,7 +58,7 @@
 
 <script lang='ts' setup>
 import { nextTick, onBeforeUnmount } from 'vue';
-import RootNav from './RootNav.vue';
+import RootNav from './MutipleRootNav.vue';
 
 const props = withDefaults(defineProps<{
     treeData: Record<string, any>[];
@@ -65,12 +66,10 @@ const props = withDefaults(defineProps<{
     lazy?: boolean;
     isFinished?: boolean;
     parentRecord?: Record<string, any>;
-    changeParent?: (record: Record<string, any>, type: 'ckecked' | 'no-chekced'| 'half-checked')=>void;
 }>(), {
     index: 0,
     lazy: false,
     isFinished: false,
-    multiple: false,
 });
 
 const emit = defineEmits(['change', 'update:tree-data']);
@@ -96,21 +95,26 @@ const existNext = computed(() => {
 });
 const nextNavRef = ref();
 
-// =================== 单选选中项 ====================
+// =================== 选中项 ====================
+// 展开项
+const expand = ref<(string | number)>();
 // 保存不同的父级对应的选中项
-const select = ref<string | number>();
+const select = ref<(string | number)[]>([]);
+// 切换选择
+function toogleSelect(record: Record<string, any>) {
+    if(select.value.includes(record.value)) {
+        select.value = select.value.filter((item)=>item !== record.value);
+        emit('change', [record.value], 'remove');
+    }else{
+        select.value.push(record.value);
+        emit('change', [record.value], 'add');
+    }
+}
 // 点击某一项
 function clickSelectItem(record: Record<string, any>) {
-    if(select.value === record.value) return;
-    // 清空下级选中项
-    nextNavRef.value?.clearSelect();
-    select.value = record.value;
+    if(expand.value === record.value) return;
+    expand.value = record.value;
     loadNextData(record);
-    let isEnd = !nextTreeData.value?.length;
-    if(props.lazy) {
-        isEnd = isEnd && record?.isLeaf;
-    }
-    emit('change', [select.value], isEnd);
 }
 // 加载下级数据
 function loadNextData(record: Record<string, any>) {
@@ -130,24 +134,25 @@ function loadNextData(record: Record<string, any>) {
 }
 // 清空选项
 function clearSelect() {
-    select.value = '';
+    select.value = [];
     // 清空下级选中项
     nextNavRef.value?.clearSelect();
     nextTreeData.value = [];
 }
 // 更新选中项,用于设置默认值
 function updateSelect(value: (string | number)[]) {
-    const label = value[props.index];
-    if(label !== select.value) {
-        select.value = label || '';
-        nextTreeData.value = props.treeData.find((item : Record<string, any>) => item.value === label)?.children || [];
+    select.value = [];
+    for(const data of props.treeData) {
+        if(value.includes(data.value)) {
+            select.value.push(data.value);
+        }
     }
     nextTick(()=>{
         nextNavRef.value?.updateSelect(value);
     });
 }
-function nextSelectChange(record: (string | number)[], isEnd:boolean) {
-    emit('change', [select.value, ...record], isEnd);
+function nextSelectChange(record: (string | number)[], type: 'add' | 'remove') {
+    emit('change', expand.value ? [expand.value, ...record] : record, type);
 }
 // 更新下级options，动态加载数据
 let unwatchMap:Record<string, any> = {};
@@ -155,7 +160,7 @@ function updateNextOptions(record: Record<string, any>) {
     loadingMap.value[record.value] = true;
     unwatchMap[record.value] = watch(()=>record.children?.length, (length: number)=>{
         // 两次加载同时触发，保证先后顺序
-        if(length && record.value === select.value) {
+        if(length && record.value === expand.value) {
             nextTreeData.value = record.children || [];
         }
         loadingMap.value[record.value] = false;
@@ -231,7 +236,7 @@ watch(()=>props.parentRecord?.value, ()=>{
 
 // =================== 样式 ====================
 function isHeighLight(record: Record<string, any>) {
-    return select.value === record.value;
+    return expand.value === record.value;
 }
 
 defineExpose({
@@ -247,12 +252,91 @@ defineExpose({
     }
 }
 .nav-menu{
+    display: flex;
+    flex-direction: column;
+    width: 10rem;
     border-right: 1px solid #f0f0f0;
+    padding: 5px 0;
+    overflow: auto;
     .nav-item{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-shrink: 0;
+        height: 2rem;
+        padding: 0 0.35rem;
+        cursor: pointer;
         transition: all 0.3s;
+        &:hover{
+            background-color: #f5f5f5;
+
+        }
+    }
+    .nav-checkbox{
+        flex-shrink: 0;
+        box-sizing: border-box;
+        position: relative;
+        top: -0.07rem;
+        inset-inline-start: 0;
+        display: block;
+        width: 1rem;
+        height: 1rem;
+        direction: ltr;
+        background-color: #ffffff;
+        border: 1px solid #d9d9d9;
+        border-radius: 4px;
+        border-collapse: separate;
+        transition: all 0.3s;
+        &.checked{
+            background-color: #1677ff;
+            border-color: #1677ff;
+            &::after{
+                opacity: 1;
+                transform: rotate(45deg) scale(1) translate(-50%,-50%);
+                transition: all 0.2s cubic-bezier(0.12, 0.4, 0.29, 1.46) 0.1s;
+            }
+        }
+        &:after{
+            box-sizing: border-box;
+            position: absolute;
+            top: 50%;
+            inset-inline-start: 21.5%;
+            display: table;
+            width: 5.7142857142857135px;
+            height: 9.142857142857142px;
+            border: 2px solid #fff;
+            border-top: 0;
+            border-inline-start: 0;
+            transform: rotate(45deg) scale(0) translate(-50%,-50%);
+            opacity: 0;
+            content: "";
+            transition: all 0.1s cubic-bezier(0.71, -0.46, 0.88, 0.6), opacity 0.1s;
+        }
+    }
+    .arrow-right{
+        flex-shrink: 0;
+        width: 0.75rem;
+        height: 0.75rem;
+        margin-left: 0.75rem;
     }
     .nav-loading{
+        flex-shrink: 0;
+        width: 0.75rem;
+        height: 0.75rem;
+        margin-left: 0.75rem;
         animation: rotate 1s linear infinite;
+    }
+    .nav-label{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding-left: 0.5rem;
+        cursor: pointer;
+        overflow: hidden;
+        .nav-text{
+            transform: translateY(-0.06rem);
+            margin-left: 0.5rem;
+        }
     }
     .nav-label > :deep(*) ,
     .nav-label > * {
