@@ -1,17 +1,16 @@
 <template>
-    <div class="relative w-[fit-content]" @click.stop>
+    <div class="cascader-radio" @click.stop>
         <div @click="openCascader">
             <a-cascader
                 :value="props.value"
                 @update:value="clearValue"
                 :options="options"
                 placeholder="Please select"
-                ref="cascader"
                 :open="false"
             >
             </a-cascader>
         </div>
-        <div v-if="init" v-show="open" class="nav-menus absolute z-99 h-15rem top-2.35rem flex">
+        <div v-if="init" v-show="open" class="nav-menus">
             <RootNav
                 ref="nextNavRef"
                 :tree-data="options"
@@ -85,7 +84,6 @@ function change(record: (string | number)[], isEnd:boolean) {
 }
 
 // =================== 控制下拉菜单的显示和隐藏 ====================
-const cascader = ref<HTMLElement>();
 const open = ref(false);
 function openCascader() {
     open.value = true;
@@ -106,12 +104,21 @@ onBeforeUnmount(()=>{
 
 </script>
 <style lang='less' scoped>
-.nav-menus{
-    font-variant: initial;
-    background-color: #fff;
-    border-radius: 2px;
-    outline: none;
-    box-shadow: 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
-    transition: all 3s;
+.cascader-radio{
+    position: relative;
+    width: 10rem;
+    .nav-menus{
+        display: flex;
+        position: absolute;
+        z-index: 99;
+        top: 2.35rem;
+        height: 15rem;
+        background-color: #fff;
+        border-radius: 2px;
+        font-variant: initial;
+        outline: none;
+        box-shadow: 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
+        transition: all 3s;
+    }
 }
 </style>

@@ -1,20 +1,21 @@
 <script setup lang="ts">
-import CascaderRadio from '../package/cascader/Index.vue';
-import CascaderRadioUnocss from '../package/cascader-unocss/Index.vue';
+import CascaderRadio from '../package/cascader/radio/RadioCascader.vue';
+import CascaderMultiple from '../package/cascader/multiple/MultipleCascader.vue';
 import BaseTab from './BaseTab.vue';
 import { message } from 'ant-design-vue';
 
 const value = ref<string[]>([]);
+const value2 = ref<string[]>([]);
 
 const options = ref<Record<string, any>[]>([]);
 options.value = [
     {
         value: 'zhejiang',
-        label: 'Zhejiang',
+        label: '浙江',
         children: [
             {
                 value: 'hangzhou',
-                label: 'Hangzhou',
+                label: '杭州',
                 children: [
                     {
                         value: 'xihu',
@@ -24,7 +25,7 @@ options.value = [
             },
             {
                 value: 'ningbo',
-                label: 'Ningbo',
+                label: '宁波',
                 children: [
                     {
                         value: 'dongqianlake',
@@ -34,7 +35,7 @@ options.value = [
             },
             {
                 value: 'wenzhou',
-                label: 'Wenzhou',
+                label: '温州',
                 children: [
                     {
                         value: 'jiangxinpark',
@@ -46,7 +47,7 @@ options.value = [
     },
     {
         value: 'jiangsu',
-        label: 'Jiangsu',
+        label: '江苏',
         children: [
             {
                 value: 'nanjing',
@@ -79,7 +80,7 @@ function loadData(data: Record<string, any> | undefined, pageNum:number) {
         }else{
             for(let i = pageNum * 10;i < pageNum * 10 + 10;i++) {
                 options.value.push({
-                    value: 'zhejiang' + i + Math.random(),
+                    value: 'zhejiang' + i,
                     label: 'Zhejiang-text' + i,
                     isLeaf: false,
                 });
@@ -111,21 +112,19 @@ function loadData(data: Record<string, any> | undefined, pageNum:number) {
                         <span>{{data.label}}</span>
                     </template>
                 </CascaderRadio>
-            </template>
-            <template #unocss>
-                {{ value }}
-                <CascaderRadioUnocss
-                    class="m-10px"
-                    v-model:value="value"
+                <div>多选：</div>
+                {{ value2 }}
+                <CascaderMultiple
+                    class="m-10px w-20rem!"
+                    v-model:value="value2"
                     :options="options"
                     :is-finished="isFinished"
                     :lazy="true"
                     :loadData="loadData"
                 >
-                    <template #label="{data}">
-                        <span>{{data.label}}</span>
-                    </template>
-                </CascaderRadioUnocss>
+                </CascaderMultiple>
+            </template>
+            <template #unocss>
             </template>
         </BaseTab>
     </div>

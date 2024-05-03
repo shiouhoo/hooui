@@ -65,7 +65,6 @@ const props = withDefaults(defineProps<{
     lazy?: boolean;
     isFinished?: boolean;
     parentRecord?: Record<string, any>;
-    changeParent?: (record: Record<string, any>, type: 'ckecked' | 'no-chekced'| 'half-checked')=>void;
 }>(), {
     index: 0,
     lazy: false,
@@ -103,6 +102,7 @@ const select = ref<string | number>();
 function clickSelectItem(record: Record<string, any>) {
     if(select.value === record.value) return;
     // 清空下级选中项
+    nextTreeData.value = [];
     nextNavRef.value?.clearSelect();
     select.value = record.value;
     loadNextData(record);
