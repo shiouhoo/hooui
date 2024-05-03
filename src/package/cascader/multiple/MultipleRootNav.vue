@@ -8,8 +8,8 @@
             @click="clickSelectItem(item)"
         >
             <div class="nav-label">
+                <span class="nav-checkbox" :class="{checked : select.includes(item.value)}" @click.stop="toogleSelect(item)" ></span>
                 <slot name="label" :data="item">
-                    <span class="nav-checkbox" :class="{checked : select.includes(item.value)}" @click.stop="toogleSelect(item)" ></span>
                     <span class="nav-text">{{ item.label }}</span>
                 </slot>
             </div>

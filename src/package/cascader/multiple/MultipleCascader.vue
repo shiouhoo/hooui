@@ -100,9 +100,15 @@ const init = ref(false);
 const nextNavRef = ref();
 // 记录id对应的数据
 const optionMap = ref<Record<string, any>>({});
-for(const item of props.options) {
-    optionMap.value[item.value] = item;
+function initOptionMap(value: Record<string, any>[]) {
+    for(const item of value) {
+        optionMap.value[item.value] = item;
+        if(item.children && item.children.length) {
+            initOptionMap(item.children);
+        }
+    }
 }
+initOptionMap(props.options);
 function updateOptionMap(value: Record<string, any>[]) {
     for(const item of value) {
         optionMap.value[item.value] = item;
