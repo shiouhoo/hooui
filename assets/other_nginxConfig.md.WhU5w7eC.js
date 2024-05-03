@@ -34,8 +34,10 @@ import{_ as s,c as a,o as i,R as n}from"./chunks/framework.2gZay9Je.js";const y=
 <span class="line"></span>
 <span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">    server</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> {</span></span>
 <span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">    	listen </span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">9000;</span></span>
-<span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">    	# server_name baidu.com;</span></span>
 <span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">        server_name </span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> localhost;</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">        set </span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">$backend http://192.168.210.60;</span></span>
+<span class="line"></span>
 <span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">        index </span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">index.html;</span></span>
 <span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">        # 没有指定base</span></span>
 <span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">        root </span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">D:\\项目地址\\dist;</span></span>
@@ -56,10 +58,10 @@ import{_ as s,c as a,o as i,R as n}from"./chunks/framework.2gZay9Je.js";const y=
 <span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">        #       proxy_set_header  X-Forwarded-For  $proxy_add_x_forwarded_for;</span></span>
 <span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">        #       proxy_set_header X-NginX-Proxy true;</span></span>
 <span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">        # 末尾有/则请求url不拼接/api/</span></span>
-<span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">        #       proxy_pass http://localhost:8081/;</span></span>
+<span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">        #       proxy_pass $backend;</span></span>
 <span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">        #    }</span></span>
 <span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">        #    location /ws/ {</span></span>
-<span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">        #        proxy_pass http://localhost:8810;</span></span>
+<span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">        #        proxy_pass $backend;</span></span>
 <span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">        #        proxy_set_header Host $host;</span></span>
 <span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">        #        proxy_http_version 1.1;</span></span>
 <span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">        #        proxy_set_header Upgrade $http_upgrade;</span></span>
@@ -69,4 +71,4 @@ import{_ as s,c as a,o as i,R as n}from"./chunks/framework.2gZay9Je.js";const y=
 <span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">        #    }</span></span>
 <span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">        # return 301 https://$server_name$request_uri;</span></span>
 <span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">        }</span></span>
-<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span></span></code></pre></div>`,3),e=[l];function t(h,k,r,o,d,c){return i(),a("div",null,e)}const D=s(p,[["render",t]]);export{y as __pageData,D as default};
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span></span></code></pre></div>`,3),e=[l];function t(h,k,r,d,o,c){return i(),a("div",null,e)}const D=s(p,[["render",t]]);export{y as __pageData,D as default};
