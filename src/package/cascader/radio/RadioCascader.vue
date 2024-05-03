@@ -6,7 +6,6 @@
                 @update:value="clearValue"
                 :options="options"
                 placeholder="Please select"
-                ref="cascader"
                 :open="false"
             >
             </a-cascader>
@@ -85,7 +84,6 @@ function change(record: (string | number)[], isEnd:boolean) {
 }
 
 // =================== 控制下拉菜单的显示和隐藏 ====================
-const cascader = ref<HTMLElement>();
 const open = ref(false);
 function openCascader() {
     open.value = true;
@@ -108,7 +106,7 @@ onBeforeUnmount(()=>{
 <style lang='less' scoped>
 .cascader-radio{
     position: relative;
-    width: fit-content;
+    width: 10rem;
     .nav-menus{
         display: flex;
         position: absolute;

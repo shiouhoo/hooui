@@ -102,6 +102,7 @@ const select = ref<string | number>();
 function clickSelectItem(record: Record<string, any>) {
     if(select.value === record.value) return;
     // 清空下级选中项
+    nextTreeData.value = [];
     nextNavRef.value?.clearSelect();
     select.value = record.value;
     loadNextData(record);

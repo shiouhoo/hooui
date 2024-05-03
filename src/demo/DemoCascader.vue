@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import CascaderRadio from '../package/cascader/radio/RadioCascader.vue';
-import CascaderRadioUnocss from '../package/cascader-unocss/radio/RadioCascader.vue';
-import CascaderMutiple from '../package/cascader/mutiple/MutipleCascader.vue';
+import CascaderMultiple from '../package/cascader/multiple/MultipleCascader.vue';
 import BaseTab from './BaseTab.vue';
 import { message } from 'ant-design-vue';
 
@@ -9,60 +8,60 @@ const value = ref<string[]>([]);
 const value2 = ref<string[]>([]);
 
 const options = ref<Record<string, any>[]>([]);
-// options.value = [
-//     {
-//         value: 'zhejiang',
-//         label: 'Zhejiang',
-//         children: [
-//             {
-//                 value: 'hangzhou',
-//                 label: 'Hangzhou',
-//                 children: [
-//                     {
-//                         value: 'xihu',
-//                         label: 'West Lake',
-//                     },
-//                 ],
-//             },
-//             {
-//                 value: 'ningbo',
-//                 label: 'Ningbo',
-//                 children: [
-//                     {
-//                         value: 'dongqianlake',
-//                         label: 'Dongqian Lake',
-//                     },
-//                 ],
-//             },
-//             {
-//                 value: 'wenzhou',
-//                 label: 'Wenzhou',
-//                 children: [
-//                     {
-//                         value: 'jiangxinpark',
-//                         label: 'Jiangxin Park',
-//                     },
-//                 ],
-//             }
-//         ],
-//     },
-//     {
-//         value: 'jiangsu',
-//         label: 'Jiangsu',
-//         children: [
-//             {
-//                 value: 'nanjing',
-//                 label: 'Nanjing',
-//                 children: [
-//                     {
-//                         value: 'zhonghuamen',
-//                         label: 'Zhong Hua Men',
-//                     },
-//                 ],
-//             },
-//         ],
-//     },
-// ];
+options.value = [
+    {
+        value: 'zhejiang',
+        label: '浙江',
+        children: [
+            {
+                value: 'hangzhou',
+                label: '杭州',
+                children: [
+                    {
+                        value: 'xihu',
+                        label: 'West Lake',
+                    },
+                ],
+            },
+            {
+                value: 'ningbo',
+                label: '宁波',
+                children: [
+                    {
+                        value: 'dongqianlake',
+                        label: 'Dongqian Lake',
+                    },
+                ],
+            },
+            {
+                value: 'wenzhou',
+                label: '温州',
+                children: [
+                    {
+                        value: 'jiangxinpark',
+                        label: 'Jiangxin Park',
+                    },
+                ],
+            }
+        ],
+    },
+    {
+        value: 'jiangsu',
+        label: '江苏',
+        children: [
+            {
+                value: 'nanjing',
+                label: 'Nanjing',
+                children: [
+                    {
+                        value: 'zhonghuamen',
+                        label: 'Zhong Hua Men',
+                    },
+                ],
+            },
+        ],
+    },
+];
 
 const isFinished = ref(false);
 function loadData(data: Record<string, any> | undefined, pageNum:number) {
@@ -81,7 +80,7 @@ function loadData(data: Record<string, any> | undefined, pageNum:number) {
         }else{
             for(let i = pageNum * 10;i < pageNum * 10 + 10;i++) {
                 options.value.push({
-                    value: 'zhejiang' + i + Math.random(),
+                    value: 'zhejiang' + i,
                     label: 'Zhejiang-text' + i,
                     isLeaf: false,
                 });
@@ -113,32 +112,19 @@ function loadData(data: Record<string, any> | undefined, pageNum:number) {
                         <span>{{data.label}}</span>
                     </template>
                 </CascaderRadio>
-
+                <div>多选：</div>
                 {{ value2 }}
-                <CascaderMutiple
-                    class="m-10px"
+                <CascaderMultiple
+                    class="m-10px w-20rem!"
                     v-model:value="value2"
                     :options="options"
                     :is-finished="isFinished"
                     :lazy="true"
                     :loadData="loadData"
                 >
-                </CascaderMutiple>
+                </CascaderMultiple>
             </template>
             <template #unocss>
-                {{ value }}
-                <CascaderRadioUnocss
-                    class="m-10px"
-                    v-model:value="value"
-                    :options="options"
-                    :is-finished="isFinished"
-                    :lazy="true"
-                    :loadData="loadData"
-                >
-                    <template #label="{data}">
-                        <span>{{data.label}}</span>
-                    </template>
-                </CascaderRadioUnocss>
             </template>
         </BaseTab>
     </div>
