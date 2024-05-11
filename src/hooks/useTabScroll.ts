@@ -48,6 +48,7 @@ export function useTabScroll(
 
     let changeTab: (key: string | number) => void | any;
 
+    let timer: number;
     // 监听tabActive变化
     function watchHandler(val: string | number | undefined) {
         const tab = target.find((item) => item.key === val);
@@ -64,8 +65,9 @@ export function useTabScroll(
                 behavior: 'smooth'
             });
             changeTab && val && changeTab(val);
+            timer && clearTimeout(timer);
             // 滚动到指定位置后再监听滚动事件,但是又不知道什么时候滚动结束，所以设置一个延迟
-            setTimeout(() => {
+            timer = setTimeout(() => {
                 scrollBox?.addEventListener('scroll', handleScroll);
             }, 500);
         }
@@ -103,7 +105,6 @@ export function useTabScroll(
                     updateTab(tabDom.key);
                     break;
                 }else if (top >= tabTop && top < nextTabTop) {
-                    // 防止重复触发
                     updateTab(tabDom.key);
                     break;
                 }
