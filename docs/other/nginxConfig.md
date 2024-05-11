@@ -77,3 +77,13 @@ http {
         }
 }
 ```
+
+### 停止nginx
+一般来说，可以通过以下命令停止nginx服务
+```shell
+nginx -s stop
+```
+但是，windows下可能不会生效，可以通过以下命令停止nginx进程
+```shell
+taskkill /f /t /im nginx.exe
+```
