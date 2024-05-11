@@ -38,8 +38,10 @@ http {
 
     server {
     	listen 9000;
-    	# server_name baidu.com;
         server_name  localhost;
+
+        set $backend http://192.168.210.60;
+
         index index.html;
         # 没有指定base
         root D:\项目地址\dist;
@@ -60,10 +62,10 @@ http {
         #       proxy_set_header  X-Forwarded-For  $proxy_add_x_forwarded_for;
         #       proxy_set_header X-NginX-Proxy true;
         # 末尾有/则请求url不拼接/api/
-        #       proxy_pass http://localhost:8081/;
+        #       proxy_pass $backend;
         #    }
         #    location /ws/ {
-        #        proxy_pass http://localhost:8810;
+        #        proxy_pass $backend;
         #        proxy_set_header Host $host;
         #        proxy_http_version 1.1;
         #        proxy_set_header Upgrade $http_upgrade;

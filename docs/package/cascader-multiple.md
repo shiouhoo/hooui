@@ -2,29 +2,25 @@
 outline: [2,3]
 ---
 
-# CascaderRadio
+# CascaderMultiple
 
-一个只能单选的级联选择器 <br/>
+一个只能父子节点分开选择的级联选择器 <br/>
 
 特点：
 
 - 支持选项中使用插槽
 - 支持选项当前页懒加载以及下一页懒加载
+- 只能父子节点分开
 
 ## 源文件
 
 
-[CascaderRadio.vue](https://github.com/shiouhoo/hooui/blob/main/src/package/cascader/radio/RadioCascader.vue)
+[CascaderRadio.vue](https://github.com/shiouhoo/hooui/blob/main/src/package/cascader/multiple/MultipleCascader.vue)
 
 
-<!-- :::warning
-cascader-radio使用了fit-content，但是 'width: fit-content' is not supported by Firefox, Firefox for Android. Add 'width: -moz-fit-content' to support Firefox 3+, Firefox for Android 4+.
-::: -->
 ## 示例
 
-### 插槽
-
-<div class="un-prefer-unocss"></div>
+### 基本使用
 
 :::demo
 
@@ -92,15 +88,12 @@ options.value = [
 </script>
 
 <template>
-    <CascaderRadio
-        class="m-10px"
+    <CascaderMultiple
+        class="m-10px w-20rem!"
         v-model:value="value"
         :options="options"
     >
-        <template #label="{data}">
-            <span>{{data.label}}</span>
-        </template>
-    </CascaderRadio>
+    </CascaderMultiple>
 </template>
 
 <style>
@@ -109,7 +102,7 @@ options.value = [
 ```
 :::
 
-<div class="prefer-unocss"></div>
+### 插槽
 
 :::demo
 
@@ -177,25 +170,27 @@ options.value = [
 </script>
 
 <template>
-    <CascaderRadio
-        class="m-10px"
+    <CascaderMultiple
+        class="m-10px w-20rem!"
         v-model:value="value"
         :options="options"
     >
-        <template #label="{data}">
-            <span>{{data.label}}</span>
-        </template>
-    </CascaderRadio>
+    <template #label="{data}">
+        <span style="color: #348;font:700">{{ data.label}}</span>
+    </template>
+    </CascaderMultiple>
 </template>
+
+<style>
+</style>
 
 ```
 :::
 
+
 ### 懒加载
 
 当前页懒加载和下一页懒加载
-
-<div class="un-prefer-unocss"></div>
 
 :::demo
 
@@ -243,83 +238,15 @@ function loadData(data: Record<string, any> | undefined, pageNum:number) {
 </script>
 
 <template>
-    <CascaderRadio
-        class="m-10px"
-        v-model:value="value"
+    <CascaderMultiple
+        class="m-10px w-20rem!"
+        v-model:value="value2"
         :options="options"
         :is-finished="isFinished"
         :lazy="true"
         :loadData="loadData"
     >
-        <template #label="{data}">
-            <span>{{data.label}}</span>
-        </template>
-    </CascaderRadio>
-</template>
-
-```
-:::
-
-<div class="prefer-unocss"></div>
-
-:::demo
-
-```vue
-<script setup lang="ts">
-const value = ref<string[]>([]);
-
-const options = ref<Record<string, any>[]>([]);
-// 一级菜单是否加载完成，其余菜单的标识在options数据的父节点上
-const isFinished = ref(false);
-// data为当前菜单的父节点,parent为当前菜单加载的页码
-function loadData(data: Record<string, any> | undefined, pageNum:number) {
-    setTimeout(() => {
-        if(data) {
-            !data.children && (data.children = []);
-            const list = [...data.children];
-            for(let i = pageNum * 10;i < pageNum * 10 + 10;i++) {
-                list.push({
-                    value: 'zhejiang' + i + Math.random(),
-                    label: 'Zhejiang' + i,
-                    // 懒加载时，需要标识是否是叶子节点
-                    isLeaf: true,
-                });
-            }
-            // 可直接修改data.children，也可修改options变量
-            data.children = list;
-        }else{
-            for(let i = pageNum * 10;i < pageNum * 10 + 10;i++) {
-                options.value.push({
-                    value: 'zhejiang' + i + Math.random(),
-                    label: 'Zhejiang' + i,
-                    // 懒加载时，需要标识是否是叶子节点
-                    isLeaf: false,
-                });
-            }
-        }
-        if(pageNum === 1) {
-            // 二级及以上菜单的加载标识
-            data && (data.isfinished = true);
-            !data && (isFinished.value = true);
-        }
-    }, 1000);
-}
-
-</script>
-
-<template>
-    <CascaderRadio
-        class="m-10px"
-        v-model:value="value"
-        :options="options"
-        :is-finished="isFinished"
-        :lazy="true"
-        :loadData="loadData"
-    >
-        <template #label="{data}">
-            <span>{{data.label}}</span>
-        </template>
-    </CascaderRadio>
+    </CascaderMultiple>
 </template>
 
 ```
@@ -333,7 +260,7 @@ const data = [
     {
         name: 'value(v-model)',
         desc: '选中项',
-        type: '(string | number)[]',
+        type: '((string | number)[])[]',
         defaultValue: '-',
     },
     {
@@ -341,18 +268,6 @@ const data = [
         desc: '下拉菜单数据',
         type: 'Record<string, any>[]',
         defaultValue: '[]',
-    },
-    {
-        name: 'changeOnSelect',
-        desc: '是否允许选中任意一级菜单',
-        type: 'boolean',
-        defaultValue: 'false',
-    },
-    {
-        name: 'iconSize',
-        desc: '图标大小，默认为20，单位为像素，用于计算图标位置',
-        type: 'number',
-        defaultValue: '20',
     },
     {
         name: 'loadData',
@@ -378,7 +293,7 @@ const data2 = [
     {
         name: 'change',
         desc: '选中值改变时触发',
-        params: 'value: (string | number)[]',
+        params: 'value: ((string | number)[])[]',
     },
 ];
 

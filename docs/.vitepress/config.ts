@@ -50,7 +50,8 @@ export default defineConfig({
                 {
                     text: '输入组件',
                     items: [
-                        { text: 'CascaderRadio 单选级联选择器', link: '/package/cascader-radio' },
+                        { text: 'CascaderMultiple 多选级联选择', link: '/package/cascader-multiple' },
+                        { text: 'CascaderRadio 单选级联选择', link: '/package/cascader-radio' },
                         { text: 'ExpandContainer 展开收起容器', link: '/package/expandcontainer' },
                         { text: 'SearchScopeInput 下拉输入搜索框', link: '/package/searchscopeinput' },
                     ]
