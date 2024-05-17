@@ -1,6 +1,6 @@
 import { createApp } from 'vue';
 import type { Directive, DirectiveBinding } from 'vue';
-import LoadingComponent from './components/LoadingComponent.vue';
+import LoadingComponent from './LoadingComponent.vue';
 
 // 插入节点
 function append(el: any) {
@@ -9,8 +9,11 @@ function append(el: any) {
         el.style.position = 'relative';
         el.isPosition = true;
     }
-    if (el.getAttribute('h-loading-text')) {
-        el.instance.setLoadingText(el.getAttribute('h-loading-text'));
+    if (el.getAttribute('loading-text')) {
+        el.instance.setLoadingText(el.getAttribute('loading-text'));
+    }
+    if (el.getAttribute('loading-top')) {
+        el.instance.setLoadingTop(el.getAttribute('loading-top'));
     }
     el.appendChild(el.instance.$el);
 }
@@ -39,6 +42,6 @@ const loading: Directive = {
 };
 
 export default {
-    name: 'h-loading',
+    name: 'loading',
     directive: loading
 };

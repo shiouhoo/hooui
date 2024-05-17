@@ -95,7 +95,6 @@ const tabs: Record<string, any>[] = [
         ]
     }
 ];
-
 </script>
 
 <template>

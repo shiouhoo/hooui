@@ -8,7 +8,7 @@ withDefaults(defineProps<{
 );
 
 import { ref } from 'vue';
-import loadingDirective from '../directive/loading';
+import loadingDirective from '../directive/loading/loading';
 
 const vHLoading = loadingDirective.directive;
 
@@ -16,7 +16,7 @@ const loading = ref(true);
 
 </script>
 <template>
-    <div class="wrapper" v-h-loading="loading" :h-loading-text="text">
+    <div class="wrapper" v-loading="loading" :h-loading-text="text">
         这里测试一下loading
     </div>
 </template>

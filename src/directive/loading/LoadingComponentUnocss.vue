@@ -2,25 +2,33 @@
 import { ref } from 'vue';
 const text = ref('加载中...');
 
+const loader = ref();
+const setLoadingTop = (val: string) => {
+    if (loader.value) {
+        loader.value.style.top = val;
+        loader.value.style.transform = 'translate(-50%, 0)';
+    }
+};
 const setLoadingText = (val: string)=>{
     text.value = val;
 };
 
 defineExpose({
-    setLoadingText
+    setLoadingText,
+    setLoadingTop
 });
 
 </script>
 
 <template>
-    <div class="h-mask">
-        <div class="h-loader">
+    <div class="h-mask w-100% h-100% absolute left-0 top-0 right-0 bottom-0 m-auto bg-[rgba(255,255,255,0.9)] z-9">
+        <div ref="loader" class="h-loader flex flex-col items-center absolute top-50% left-50% translate--50%">
             <div class="h-icon">
-                <svg class="circular" viewBox="0 0 50 50">
+                <svg class="circular inline w-42px h-42px" viewBox="0 0 50 50">
                     <circle class="path" cx="25" cy="25" r="20" fill="none"/>
                 </svg>
             </div>
-            <div class="h-tip-text">{{ text }}</div>
+            <div class="h-tip-text color-#3793ff pt-10px">{{ text }}</div>
         </div>
     </div>
 </template>
@@ -49,30 +57,11 @@ defineExpose({
 }
 
 .h-mask {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    margin: auto;
-    background-color: rgba(255, 255, 255, 0.9);
-    z-index: 9;
     transition: opacity 0.3s;
 
     .h-loader {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate3d(-50%, -50%, 0);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+
         .circular {
-            display: inline;
-            height: 42px;
-            width: 42px;
             animation: loading-rotate 2s linear infinite;
             .path{
                 animation: loading-icon 1.5s ease-in-out infinite;
@@ -83,11 +72,6 @@ defineExpose({
                 stroke-linecap: round;
             }
         }
-    }
-
-    .h-tip-text {
-        color: #3793ff;
-        padding-top: 10px;
     }
 
 }

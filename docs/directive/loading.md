@@ -2,7 +2,7 @@
 outline: [2,3]
 ---
 
-# v-h-loading
+# v-loading
 这是一个作用于`pc`上，用于在元素上添加一个loading效果，弥补了antdv没有loading指令的缺陷。
 
 ## 源文件
@@ -24,7 +24,7 @@ outline: [2,3]
 
 ```vue
 <template>
-    <div class="wrapper" v-h-loading="loading">
+    <div class="wrapper" v-loading="loading">
         随便写点是吗
     </div>
 </template>
@@ -49,7 +49,7 @@ const loading = ref(true);
 
 ```vue
 <template>
-    <div class="wrapper" v-h-loading="loading" h-loading-text="这是自定义文字。">
+    <div class="wrapper" v-loading="loading" h-loading-text="这是自定义文字。">
         随便写点是吗
     </div>
 </template>
@@ -72,7 +72,7 @@ const loading = ref(true);
 
 const data = [
     {
-        name: 'v-h-loading',
+        name: 'v-loading',
         desc: '是否显示loading',
         type: 'boolean',
         defaultValue: 'false',
