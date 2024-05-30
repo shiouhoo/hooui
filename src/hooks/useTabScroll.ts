@@ -22,7 +22,7 @@ function getDom(target: TabValue): HTMLElement {
 }
 // 获取元素距离滚动容器顶部的距离
 function getOffsetTop(element: HTMLElement, parent: HTMLElement | Window) {
-    return parent instanceof Window ? element.getBoundingClientRect().top - document.body.getBoundingClientRect().top : element.getBoundingClientRect().top - parent.getBoundingClientRect().top;
+    return parent instanceof Window ? element.getBoundingClientRect().top - document.body.getBoundingClientRect().top : element.getBoundingClientRect().top - parent.getBoundingClientRect().top + parent.scrollTop;
 }
 
 function debounce(func: ()=>void, wait:number) {
@@ -41,7 +41,8 @@ function debounce(func: ()=>void, wait:number) {
 
 export function useTabScroll(
     target: TabScroll[],
-    scrollContainer: Ref<HTMLElement | null> | string | HTMLElement | Window = window, targetTop = 20,
+    scrollContainer: Ref<HTMLElement | null> | string | HTMLElement | Window = window,
+    targetTop = 20,
     trigger?: Ref<Boolean>
 ) {
     const tabActive = ref<string | number>();
