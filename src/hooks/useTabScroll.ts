@@ -41,7 +41,8 @@ function throttle(func: ()=>void, wait:number) {
 
 export function useTabScroll(
     target: TabScroll[],
-    scrollContainer: Ref<HTMLElement | null> | string | HTMLElement | Window = window, targetTop = 20,
+    scrollContainer: Ref<HTMLElement | null> | string | HTMLElement | Window = window,
+    targetTop = 20,
     trigger?: Ref<Boolean>
 ) {
     const tabActive = ref<string | number>();

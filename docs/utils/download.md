@@ -6,12 +6,17 @@ outline: [2,3]
 
 ```ts
 async function downloadFile(
-    res: ArrayBuffer | Blob | Promise<ArrayBuffer | Blob>, 
+    res: string | ArrayBuffer | Blob | Promise<ArrayBuffer | Blob>, 
     fileName: string
 ){
     let e: Blob;
-    if(res instanceof Promise) {
-        res.then(()=>{
+    if(typeof res === 'string') {
+        axios.get(res, {responseType: 'blob'}).then((res)=>{
+            downloadFile(res, fileName);
+        });
+        return;
+    }else if(res instanceof Promise) {
+        res.then((res)=>{
             downloadFile(res, fileName);
         });
         return;
