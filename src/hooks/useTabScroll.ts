@@ -22,10 +22,10 @@ function getDom(target: TabValue): HTMLElement {
 }
 // 获取元素距离滚动容器顶部的距离
 function getOffsetTop(element: HTMLElement, parent: HTMLElement | Window) {
-    return parent instanceof Window ? element.getBoundingClientRect().top - document.body.getBoundingClientRect().top : element.getBoundingClientRect().top - parent.getBoundingClientRect().top;
+    return parent instanceof Window ? element.getBoundingClientRect().top - document.body.getBoundingClientRect().top : element.getBoundingClientRect().top - parent.getBoundingClientRect().top + parent.scrollTop;
 }
 
-function debounce(func: ()=>void, wait:number) {
+function throttle(func: ()=>void, wait:number) {
     let timeout: number | null = null;
     return ()=>{
         if(timeout) {
@@ -48,7 +48,6 @@ export function useTabScroll(
 
     let changeTab: (key: string | number) => void | any;
 
-    let timer: number;
     // 监听tabActive变化
     function watchHandler(val: string | number | undefined) {
         const tab = target.find((item) => item.key === val);
@@ -65,11 +64,11 @@ export function useTabScroll(
                 behavior: 'smooth'
             });
             changeTab && val && changeTab(val);
-            timer && clearTimeout(timer);
-            // 滚动到指定位置后再监听滚动事件,但是又不知道什么时候滚动结束，所以设置一个延迟
-            timer = setTimeout(() => {
+            const scrollHandler = ()=>{
                 scrollBox?.addEventListener('scroll', handleScroll);
-            }, 500);
+                scrollBox?.removeEventListener('wheel', scrollHandler);
+            };
+            scrollBox?.addEventListener('wheel', scrollHandler);
         }
     }
     let unwatch = watch(tabActive, watchHandler);
@@ -83,7 +82,7 @@ export function useTabScroll(
         changeTab && flag && changeTab(key);
         unwatch = watch(tabActive, watchHandler);
     }
-    const handleScroll = debounce(() => {
+    const handleScroll = throttle(() => {
         // 获取滚动容器
         scrollBox = getDom(scrollContainer as TabValue);
         if (!scrollBox) {
@@ -101,14 +100,11 @@ export function useTabScroll(
                 // 获取当前tab距离滚动容器顶部的距离
                 const tabTop = getOffsetTop(element, scrollBox);
                 const nextTabTop = getOffsetTop(nextElement, scrollBox);
-                if(i === 0 && top < tabTop) {
-                    updateTab(tabDom.key);
-                    break;
-                }else if (top >= tabTop && top < nextTabTop) {
+                if (top >= tabTop && top < nextTabTop) {
                     updateTab(tabDom.key);
                     break;
                 }
-                // 如果滚动到最后一个tab
+                // 最后一个tab高度过大，需要特殊处理
                 if(i === target.length - 2 && top >= nextTabTop) {
                     updateTab(nextTabDom.key);
                 }
