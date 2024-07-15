@@ -1,5 +1,7 @@
 # Change Log
 
+- singleAxios(feat): axios取消请求
+
 ## 1.3.1(2024-5-30)
 
 - nginxConfig(feat): 更新停止nginx
