@@ -3,6 +3,7 @@
 ## 1.4.0(2024-8-4)
 
 - usePreconditionFunc(feat): 加入副作用函数调用hook
+- singleAxios(feat): axios取消请求
 
 ## 1.3.1(2024-5-30)
 

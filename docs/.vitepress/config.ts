@@ -93,6 +93,7 @@ export default defineConfig({
                     items: [
                         { text: 'unocss配置', link: '/other/unocssConfig' },
                         { text: 'nginx配置', link: '/other/nginxConfig' },
+                        { text: 'axios取消请求', link: '/other/singleAxios' },
                     ]
                 }
             ]
