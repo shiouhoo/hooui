@@ -82,6 +82,7 @@ export default defineConfig({
                     text: 'hooks',
                     items: [
                         { text: 'useFullScreen', link: '/hooks/useFullScreen' },
+                        { text: 'usePreconditionFunc', link: '/hooks/usePreconditionFunc' },
                         { text: 'useTabScroll', link: '/hooks/useTabScroll' },
                     ]
                 }

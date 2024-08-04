@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.4.0(2024-8-4)
+
+- usePreconditionFunc(feat): 加入副作用函数调用hook
+
 ## 1.3.1(2024-5-30)
 
 - nginxConfig(feat): 更新停止nginx
