@@ -49,8 +49,8 @@ getData();
 const data = [
     {
         name: '第一个参数',
-        desc: '监听的数据',
-        type: 'Ref| Ref[]',
+        desc: '监听的数据，可以是ref，或者getter函数(一定要是响应式数据)',
+        type: 'Ref | Ref[] | (() => any) | [() => any]',
         defaultValue: '-',
     },
     {

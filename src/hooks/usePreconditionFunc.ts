@@ -1,31 +1,30 @@
-import { type Ref, watch, unref } from 'vue';
+import { type Ref, watch, isRef } from 'vue';
 
-function shlouldRunFunc(varible: Ref[]) {
-    return varible.every((item)=> {
-        const it = unref(item);
-        if(Array.isArray(it) && it.length) {
+function shouldRunFunc(variable: (Ref<any> | (() => any))[]) {
+    return variable.every(item => {
+        const it: any = isRef(item) ? item.value : (<() => void>item)();
+        if (Array.isArray(it) && it.length) {
             return true;
-        }else if(Object.prototype.toString.call(it) === '[object Object]' && Object.keys(it).length) {
+        } else if (Object.prototype.toString.call(it) === '[object Object]' && Object.keys(it).length) {
             return true;
-        }else{
+        } else {
             return it !== null && it !== undefined;
         }
     });
 }
 
-export function usePreconditionFunc(varible: Ref | Ref[], func: Function) {
-    const arr = Array.isArray(varible) ? varible : [varible];
-    return ()=>{
-        if(shlouldRunFunc(arr)) {
+export function usePreconditionFunc(variable: Ref | Ref[] | (() => any) | [() => any], func: () => void) {
+    const arr = Array.isArray(variable) ? variable : [variable];
+    return () => {
+        if (shouldRunFunc(arr)) {
             func();
-        }else{
-            const unwatch = watch(arr, (newVal)=>{
-                if(shlouldRunFunc(newVal)) {
+        } else {
+            const unwatch = watch(arr, () => {
+                if (shouldRunFunc(arr)) {
                     func();
                     unwatch();
                 }
             });
         }
     };
-
 }
