@@ -31,7 +31,7 @@ export default defineConfig({
         nav: [
             { text: 'directive', link: '/directive/', activeMatch: '/directive' },
             { text: 'components', link: '/package/', activeMatch: '/package' },
-            { text: '工具函数', link: '/utils/download', activeMatch: '/utils' },
+            { text: '工具函数', link: '/utils/copyRichTextToClipboard', activeMatch: '/utils' },
             { text: 'hooks', link: '/hooks/useFullScreen', activeMatch: '/hooks' },
             { text: 'other', link: '/other/unocssConfig', activeMatch: '/other' }
         ],
@@ -73,6 +73,7 @@ export default defineConfig({
                 {
                     text: '工具函数',
                     items: [
+                        { text: '富文本复制', link: '/utils/copyRichTextToClipboard' },
                         { text: '下载', link: '/utils/download' },
                     ]
                 }

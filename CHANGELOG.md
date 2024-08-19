@@ -1,6 +1,9 @@
 # Change Log
 
+## 1.4.0(2024-8-19)
+
 - fix(usePreconditionFunc): 修改错误拼写，修改类型，支持getter函数
+- feat(copyRichTextToClipboard): 加入富文本复制函数
 
 ## 1.4.0(2024-8-4)
 
